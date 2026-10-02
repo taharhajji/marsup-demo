@@ -49,10 +49,11 @@ Deck : https://claude.ai/artifact/8YMN3JRUAY2cELuFn1wYKp
 ### Slide 2 · Persona et problématique (1:00)
 
 **À dire**
-> Pour rendre tout ça concret, voici **Sarah**. 21 ans, troisième année, elle habite dans le 6e, arrivée en septembre.
-> Elle court deux fois par semaine, aimerait essayer le beach-volley, libre mardi soir, jeudi soir et samedi matin. Budget étudiant : pas de club payant. Et surtout, **elle veut savoir avec qui elle part avant de dire oui**.
-> Notre problématique : **comment permettre à un jeune qui arrive à Marseille de trouver, en quelques minutes, une activité sportive et des personnes de confiance avec qui la pratiquer ?**
-> Trois exigences : au bon niveau, au bon créneau, sans risque.
+> Pour rendre tout ça concret, voici **Lola**. 25 ans, parisienne, étudiante à Marseille, en résidence étudiante. Elle vit seule et ne connaît personne ici.
+> Elle est timide, sort peu en dehors des cours, et elle a laissé tomber le handball, sa passion à Paris. Son emploi du temps est chargé, les activités sont loin, et elle ne sait pas où chercher.
+> Sa phrase : **« J’aime bien quand les choses se font naturellement. »**
+> Notre problématique : **comment aider Lola à reprendre le sport et à rencontrer des gens à Marseille, sans avoir à faire le premier pas seule ?**
+> Trois exigences : au bon niveau, au bon créneau, en confiance.
 > Je passe la parole à [Orateur 2] pour la solution.
 
 **Transition** : regarder Orateur 2, lui tendre la télécommande.
@@ -70,9 +71,9 @@ Deck : https://claude.ai/artifact/8YMN3JRUAY2cELuFn1wYKp
 
 **À dire**
 > Notre réponse, c’est mars’up, en trois étapes.
-> **Étape un, le profil.** Sarah renseigne ses sports, son niveau dans chacun, son quartier, ses créneaux, ses centres d’intérêt. Et elle **vérifie son identité** : pièce d’identité plus selfie, via un prestataire spécialisé. mars’up ne stocke aucun document, uniquement le statut « vérifié ». C’est notre réponse à la méfiance.
+> **Étape un, le profil.** Lola renseigne ses sports, son niveau dans chacun, son quartier, ses créneaux, ses centres d’intérêt. Et elle **vérifie son identité** : pièce d’identité plus selfie, via un prestataire spécialisé. mars’up ne stocke aucun document, uniquement le statut « vérifié ». C’est notre réponse à la méfiance.
 > **Étape deux, le matching.** L’app lui propose des personnes, des activités, des groupes et des événements selon la distance, le niveau, les disponibilités, l’âge et les intérêts. **C’est du matching sportif, pas une appli de rencontre** : chaque proposition explique pourquoi elle correspond.
-> **Étape trois, l’activité.** Un tap pour rejoindre le Sunset Run au parc Borély, le chat du groupe s’ouvre, on se met d’accord sur le rendez-vous, et on se retrouve. Autour : la carte de Marseille, les événements mars’up et partenaires, l’IA mars’up qui répond à « je suis libre mardi soir, je fais quoi ? », et un espace administrateur pour la modération.
+> **Étape trois, l’activité.** Un tap pour rejoindre le hand loisir du jeudi ou le Sunset Run à Borély, le chat du groupe s’ouvre, on se met d’accord sur le rendez-vous, et on se retrouve. Autour : la carte de Marseille, les événements mars’up et partenaires, l’IA mars’up qui répond à « je suis libre mardi soir, je fais quoi ? », et un espace administrateur pour la modération.
 > Tout ça existe en prototype fonctionnel : Tahar vous le montre en direct.
 
 **Transition** : passer à la slide « Démo » (QR code) et laisser l’écran dessus pendant toute la démo.
@@ -102,13 +103,13 @@ Rester visible, ne pas parler. Si la connexion lâche : les trois captures de la
 **Préparation** : ouvrir https://marsup.vercel.app sur ton téléphone **avant** la présentation, mode avion désactivé, luminosité au max. Option : partager l’écran du téléphone, ou faire la démo sur l’ordinateur en version mobile (fenêtre étroite). Garder la slide « Démo » (QR code) affichée au vidéoprojecteur.
 
 **Phrase d’ouverture**
-> Tout ce que [Orateur 2] vient de décrire existe. Je prends le téléphone de Sarah.
+> Tout ce que [Orateur 2] vient de décrire existe. Je prends le téléphone de Lola.
 
 **Parcours (dans cet ordre)**
 
 1. **Inscription + vérification (1:00)** — Landing app → « Créer mon profil ». Faire défiler : étape sports + niveau, étape disponibilités (montrer la grille), étape préférences. « Vérifier mon identité » → pièce d’identité → selfie → badge « Profil vérifié ».
    > Aucun document ne passe par nos serveurs : seul le statut « vérifié » est conservé.
-2. **Matching (0:50)** — « Entrer dans mars’up » → Accueil « Salut Sarah ». Onglet **Découvrir** : carte de Yanis, score 92 %, les raisons (1,8 km, même niveau, dispo mardi soir). Swiper à droite → « C’est un match sportif ».
+2. **Matching (0:50)** — « Entrer dans mars’up » → Accueil « Salut Lola ». Onglet **Découvrir** : carte de Yanis, score 92 %, les raisons (1,8 km, même niveau, dispo mardi soir). Swiper à droite → « C’est un match sportif ».
    > Pas de rencontre amoureuse : on matche sur un sport, un niveau, un créneau.
 3. **Activité + chat (0:50)** — Onglet **Activités** → « Sunset Run » → « Rejoindre l’activité » → « Ouvrir le chat ». Taper « On se retrouve à 18h15 ? », montrer la réponse.
 4. **Carte + IA (0:40)** — Icône carte : toucher le marqueur **Parc Borély**, les activités du lieu apparaissent. Depuis l’accueil, carte **IA mars’up** : taper « je suis libre mardi soir » → trois propositions avec bouton Rejoindre.
