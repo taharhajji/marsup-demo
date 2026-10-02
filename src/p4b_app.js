@@ -81,7 +81,7 @@ const AI_ANSWERS=[
  {q:/.*/,a:()=>`Je peux t'aider à trouver une activité, des personnes compatibles, un événement, ou créer un groupe selon tes disponibilités. Dis-moi quand tu es libre et ce que tu aimes.`,tail:''},
 ];
 SCREENS.ai=()=>`<div class="sc" style="min-height:100%"><div class="sc-head" style="position:sticky;top:0;background:var(--bg);z-index:2"><button class="iconbtn" data-back>${I('back')}</button><span class="avatar" style="background:linear-gradient(135deg,var(--navy),var(--blue))">${I('sparkles')}</span><div class="col grow"><b style="font-size:15px">IA mars’up</b><span class="tiny">Ton coach de quartier · répond en quelques secondes</span></div></div>
- <div class="bubbles">${S.aiLog.length?S.aiLog.join(''):`<div class="bub">Salut Sarah ! Je connais toutes les activités de Marseille et ton profil. Pose-moi une question ou choisis une suggestion 👇</div>`}</div>
+ <div class="bubbles">${S.aiLog.length?S.aiLog.join(''):`<div class="bub">Salut Lola ! Je connais toutes les activités de Marseille et ton profil. Pose-moi une question ou choisis une suggestion 👇</div>`}</div>
  <div class="sugg" style="margin-top:auto">${['Je suis nouvelle à Marseille, j\'ai 20 ans et je cherche à faire du sport mardi soir.','Crée-moi un groupe','Qui me correspond ?','Quoi faire ce week-end côté mer ?'].map(q=>`<button data-act="ask" data-v="${esc(q)}">${q}</button>`).join('')}</div>
  <div class="composer"><input class="input" id="ai-input" placeholder="Demande à l'IA mars’up…"><button class="iconbtn blue" data-act="askInput">${I('send')}</button></div>
  <p class="tiny" style="text-align:center">L'IA n'a accès qu'aux données de ton profil et aux activités publiques. Rien n'est partagé avec d'autres membres.</p></div>`;
@@ -144,7 +144,7 @@ const ACTIONS={
  chatMenu(id){sheet(`<div class="h3">Options de la conversation</div><div class="list"><div class="item">${I('bell')}<b style="font-size:14px">Mettre en sourdine</b></div><div class="item">${I('users')}<b style="font-size:14px">Voir les participants</b></div><div class="item" data-act="report" data-id="${id}" style="color:var(--bad)">${I('flag')}<b style="font-size:14px">Signaler la conversation</b></div><div class="item" style="color:var(--bad)">${I('ban')}<b style="font-size:14px">Quitter le groupe</b></div></div>`);},
  mapFilter(_,v){S.mapFilter=v;S.mapPlace=null;render();},
  place(_,v){S.mapPlace=v||null;render();if(v)setTimeout(()=>screenEl.scrollTo({top:screenEl.scrollHeight,behavior:'smooth'}),50);},
- locate(){toast('Position approximative : Marseille 6e','nav');},
+ locate(){toast('Position approximative : Marseille 5e','nav');},
  deckMode(_,v){S.deckMode=v;render();},
  resetDeck(){S.deck=['yanis','lea','ines','mehdi','camille','tom'];render();},
  filters(){sheet(`<div class="h3">Filtres de découverte</div><div class="field"><label>Distance · 5 km</label><input type="range" min="1" max="20" value="5" style="accent-color:var(--blue)"></div><div class="field"><label>Âge · 18 – 28 ans</label><input type="range" min="18" max="45" value="28" style="accent-color:var(--blue)"></div><div class="field"><label>Niveau</label><div class="seg"><button>Débutant</button><button class="on">Tous</button><button>Confirmé</button></div></div><div class="field"><label>Sports</label><div class="chips">${SPORTS.slice(0,6).map(([e,n],i)=>`<span class="chip ${i<3?'on':''}">${e} ${n}</span>`).join('')}</div></div><button class="btn btn-primary btn-block" data-act="closeSheet">Appliquer</button>`);},
@@ -153,12 +153,12 @@ const ACTIONS={
  swipe(_,v){const top=screenEl.querySelector('.swipe.top');if(!top)return;top.classList.add(v==='like'?'out-r':'out-l');
   setTimeout(()=>{if(S.deckMode==='Personnes'){const id=S.deck.shift();if(v==='like'){S.likes.add(id);if(['yanis','lea'].includes(id)){render();return matchSheet(id);}toast(`Tu veux bouger avec ${U(id).name}. On lui dit !`,'heart');}}
    else if(S.deckMode==='Activités'){const a=ACTS.filter(x=>!S.joined.has(x.id))[0];if(v==='like'&&a){S.joined.add(a.id);a.n++;toast(`Inscrite à « ${a.title} »`);}else S.deckIdx=(S.deckIdx||0)+1;}
-   else if(S.deckMode==='Groupes'){if(v==='like')toast('Tu as rejoint « Running débutant 6e/7e »','users');S.deckMode='Événements';}
+   else if(S.deckMode==='Groupes'){if(v==='like')toast('Tu as rejoint « Hand & running débutant 5e »','users');S.deckMode='Événements';}
    else{if(v==='like'){S.events.add('afterwork');toast('Inscrite à l\'Afterwork des nouveaux','calendar');}S.deckMode='Personnes';}
    render();},330);},
  ask(_,v){askAI(v);},askInput(){const i=$('#ai-input');if(i&&i.value.trim())askAI(i.value.trim());},
  aiJoin(id){ACTIONS.join(id);},
- aiGroup(){S.aiLog.push(`<div class="bub">C'est fait ✅ Le groupe « Running débutant 6e/7e » est créé et 7 membres compatibles ont reçu une invitation. Je t'ai ouvert le chat du groupe.</div>`);render();toast('Groupe créé · 7 invitations envoyées','users');},
+ aiGroup(){S.aiLog.push(`<div class="bub">C'est fait ✅ Le groupe « Hand & running débutant 5e » est créé et 7 membres compatibles ont reçu une invitation. Je t'ai ouvert le chat du groupe.</div>`);render();toast('Groupe créé · 7 invitations envoyées','users');},
  setting(_,v){S.settings[v]=!S.settings[v];render();},vis(_,v){S.settings.vis=v;render();toast('Visibilité mise à jour : '+v,'eye');},
  exportData(){toast('Export demandé. Archive envoyée sous 48 h.','download');},consent(){toast('Consentements : vérification ✓, géoloc approx. ✓, marketing ✗','shield');},
  deleteAccount(){sheet(`<div class="h3" style="color:var(--bad)">Supprimer mon compte ?</div><p class="muted">Tes données personnelles, messages et participations seront effacés définitivement sous 30 jours, conformément au RGPD. Le statut de vérification est révoqué immédiatement.</p><div class="grid2"><button class="btn btn-outline" data-act="closeSheet">Annuler</button><button class="btn" style="background:var(--bad);color:#fff" data-act="closeSheet">Confirmer</button></div>`);},
@@ -175,7 +175,7 @@ function askAI(q){const r=AI_ANSWERS.find(x=>x.q.test(q));S.aiLog.push(`<div cla
  setTimeout(()=>{let h=`<div class="bub" style="max-width:92%">${r.a()}`;
   if(r.acts)h+=`<div class="ai-res">${r.acts.map(id=>{const a=A(id);return `<div class="mini"><span class="scene">${scene(a.kind)}</span><div class="col grow"><b style="font-size:13px">${a.title}</b><span class="tiny">${a.place} · ${a.day} ${a.time} · ${a.level}</span></div>${S.joined.has(id)?'<span class="pill good">✓</span>':`<button class="pill blue" data-act="aiJoin" data-id="${id}">Rejoindre</button>`}</div>`}).join('')}</div>`;
   if(r.people)h+=`<div class="ai-res">${r.people.map(id=>{const u=U(id);return `<div class="mini" data-go="user" data-id="${id}" style="cursor:pointer">${av(u)}<div class="col grow"><b style="font-size:13px">${u.name}, ${u.age} · ${u.sector}</b><span class="tiny">${u.sports.map(s=>s[0]).join(', ')} · ${u.score} %</span></div>${I('arrow')}</div>`}).join('')}</div>`;
-  if(r.group)h+=`<div class="ai-res"><div class="mini" style="flex-direction:column;align-items:stretch;gap:6px"><b style="font-size:14px">🏃 Running débutant 6e/7e</b><span class="tiny">Mardi & jeudi 19h · départ Castellane · 5 km allure 7:00</span><div class="row">${stack(['camille','tom','ines','mehdi'])}<span class="tiny">7 membres compatibles</span></div><button class="btn btn-primary btn-sm" data-act="aiGroup">Créer ce groupe et inviter</button></div></div>`;
+  if(r.group)h+=`<div class="ai-res"><div class="mini" style="flex-direction:column;align-items:stretch;gap:6px"><b style="font-size:14px">🏃 Hand & running débutant 5e</b><span class="tiny">Mardi & jeudi 19h · départ Castellane · 5 km allure 7:00</span><div class="row">${stack(['camille','tom','ines','mehdi'])}<span class="tiny">7 membres compatibles</span></div><button class="btn btn-primary btn-sm" data-act="aiGroup">Créer ce groupe et inviter</button></div></div>`;
   if(r.tail)h+=`<p class="tiny" style="margin-top:8px;color:inherit;opacity:.7">${r.tail}</p>`;h+='</div>';S.aiLog.push(h);if(S.screen==='ai'){render();screenEl.scrollTop=screenEl.scrollHeight;}},900);}
 
 /* ---------- Geste de swipe (tactile et souris) sur la carte du haut ---------- */

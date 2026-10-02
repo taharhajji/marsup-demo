@@ -71,7 +71,7 @@ scene=function(kind,extra){const s=_scene(kind,extra);return s.replace('</defs>'
 
 /* ---------- Données ---------- */
 const USERS={
- me:{id:'me',name:'Sarah',age:21,sector:'Marseille 6e',sports:[['Running','Intermédiaire'],['Beach-volley','Débutante'],['Yoga','Intermédiaire']],interests:['Mode','Photo','Musique','Cuisine'],dispo:'Mardi et jeudi soir, samedi matin',bio:'Arrivée à Marseille en septembre pour mes études. Je cherche des gens motivés pour courir le long de la Corniche et découvrir les plages.',verified:true,av:0,ini:'SA'},
+ me:{id:'me',name:'Lola',age:25,sector:'Marseille 5e',sports:[['Handball','Confirmée'],['Running','Débutante'],['Beach-volley','À découvrir']],interests:['Mode','Instagram','Cuisine','Seconde main'],dispo:'Mardi et jeudi soir, dimanche',bio:'Parisienne arrivée à Marseille pour mes études, en résidence étudiante. Plutôt réservée : j'aime bien quand les choses se font naturellement. Le handball, c'est ma passion depuis Paris.',verified:true,av:0,ini:'LO'},
  yanis:{id:'yanis',name:'Yanis',age:23,sector:'Marseille 8e',sports:[['Running','Confirmé'],['Vélo','Intermédiaire']],interests:['Musique','Voyages','Cinéma'],dispo:'Mardi soir, week-end',bio:'Je cours le Run Club du mercredi depuis un an. Toujours partant pour un sunset run à Borély.',verified:true,av:1,ini:'YA',score:92,why:['À 1,8 km','Running · même niveau','Dispo mardi soir']},
  lea:{id:'lea',name:'Léa',age:20,sector:'Marseille 7e',sports:[['Beach-volley','Intermédiaire'],['Natation','Confirmée']],interests:['Mode','Art','Photo']  ,dispo:'Jeudi soir, dimanche',bio:'Beach-volley aux Catalans tous les dimanches. Je forme des équipes débutantes bienvenues.',verified:true,av:2,ini:'LÉ',score:88,why:['À 900 m','Beach-volley','Mode · Photo']},
  mehdi:{id:'mehdi',name:'Mehdi',age:24,sector:'Marseille 1er',sports:[['Basket','Confirmé'],['Salle de sport','Intermédiaire']],interests:['Gaming','Cuisine','Entrepreneuriat'],dispo:'Soirs de semaine',bio:'Playground du Prado le soir. On monte des 3x3 ouverts à tous les niveaux.',verified:true,av:3,ini:'ME',score:74,why:['À 2,4 km','Soirs de semaine','Cuisine']},
@@ -82,7 +82,7 @@ const USERS={
  hugo:{id:'hugo',name:'Hugo',age:22,sector:'Marseille 9e',sports:[['Randonnée','Confirmé'],['Vélo','Confirmé']],interests:['Nature','Photo'],dispo:'Week-end',bio:'Guide bénévole des Calanques. Sormiou, Sugiton, Morgiou : je connais tous les sentiers.',verified:true,av:3,ini:'HU'},
 };
 const U=id=>USERS[id];
-const SPORTS=[['🏃','Running'],['🏀','Basket'],['⚽','Football'],['🏐','Beach-volley'],['🏋️','Salle de sport'],['🧘','Yoga'],['🥾','Randonnée'],['🚴','Vélo'],['🏊','Natation'],['🎾','Tennis'],['🌊','Nautique']];
+const SPORTS=[['🏃','Running'],['🤾','Handball'],['🏀','Basket'],['⚽','Football'],['🏐','Beach-volley'],['🏋️','Salle de sport'],['🧘','Yoga'],['🥾','Randonnée'],['🚴','Vélo'],['🏊','Natation'],['🎾','Tennis'],['🌊','Nautique']];
 const EMO=Object.fromEntries(SPORTS.map(([e,n])=>[n,e]));
 
 const ACTS=[
@@ -96,6 +96,7 @@ const ACTS=[
  {id:'swim',title:'Nage en eau libre au Prado',sport:'Natation',kind:'swim',place:'Plage du Prado',day:'Mardi',time:'18h30',n:7,max:10,level:'Confirmé',desc:'1 500 m le long des bouées, encadrement par deux nageurs confirmés. Bouée de sécurité obligatoire.',who:['lea','tom'],host:'lea',map:'prado',dist:'2,6 km',tonight:true},
  {id:'tennis',title:'Doubles au Tennis Club Borély',sport:'Tennis',kind:'tennis',place:'Parc Borély',day:'Jeudi',time:'19h00',n:3,max:4,level:'Intermédiaire',desc:'Dernière place pour compléter deux doubles. Courts en terre battue, balles fournies.',who:['camille','mehdi','yanis'],host:'camille',map:'borely',dist:'1,8 km'},
  {id:'paddle',title:'Paddle à la Pointe Rouge',sport:'Nautique',kind:'paddle',place:'Base nautique Pointe Rouge',day:'Dimanche',time:'10h00',n:5,max:8,level:'Débutant',desc:'Initiation d\'une heure avec moniteur partenaire, puis balade jusqu\'à l\'île Maïre si la mer est calme. Matériel inclus.',who:['tom','ines'],host:'tom',map:'pointerouge',dist:'5,4 km',we:true},
+ {id:'hand',title:'Hand loisir mixte 🤾',sport:'Handball',kind:'court',place:'Gymnase Vallier',day:'Jeudi',time:'20h30',n:11,max:14,level:'Tous niveaux',desc:'Match loisir en équipes mixtes tirées au sort, sans arbitre ni classement. Tu arrives seule ? On te présente l'équipe avant le coup d'envoi. Chaussures de salle obligatoires.',who:['nour','camille','mehdi'],host:'nour',map:'castellane',dist:'1,3 km',pop:true},
  {id:'gym',title:'Séance en duo · Salle Castellane',sport:'Salle de sport',kind:'gym',place:'Salle partenaire Castellane',day:'Mardi',time:'20h00',n:2,max:4,level:'Intermédiaire',desc:'Full body de 45 minutes en binôme. Pass invité offert par la salle partenaire pour les membres vérifiés.',who:['mehdi'],host:'mehdi',map:'castellane',dist:'1,1 km',tonight:true},
 ];
 const A=id=>ACTS.find(a=>a.id===id);
@@ -121,7 +122,7 @@ const CHATS=[
    ['mehdi','Première fois pour moi, je serai dans le groupe débutant.','12:30'],
    ['me','Pareil, on se suit 🙌','12:31']]},
  {id:'yanis',type:'private',title:'Yanis',sub:'Running · 8e',av:'yanis',unread:0,msgs:[
-   ['yanis','Hey Sarah ! J\'ai vu qu\'on avait matché sur le running 😄','hier'],
+   ['yanis','Hey Lola ! J\'ai vu qu\'on avait matché sur le running 😄','hier'],
    ['me','Oui ! Je cherche justement un groupe pour le mardi soir.','hier'],
    ['yanis','Le mardi on fait souvent une boucle Corniche, 8 km tranquille. Ça te dit demain ?','hier'],
    ['me','Carrément, dis-moi l\'heure et le point de départ.','09:12']]},
@@ -156,7 +157,7 @@ const NOTIFS=[
 const PLACES={
  vieuxport:{x:182,y:156,name:'Vieux-Port',em:'🚴'},catalans:{x:112,y:184,name:'Plage des Catalans',em:'🏐'},auffes:{x:98,y:216,name:'Vallon des Auffes',em:'🧘'},
  prado:{x:126,y:300,name:'Plages du Prado',em:'🏀'},borely:{x:152,y:332,name:'Parc Borély',em:'🏃'},pointerouge:{x:128,y:380,name:'Pointe Rouge',em:'🌊'},
- sormiou:{x:196,y:416,name:'Calanque de Sormiou',em:'🥾'},luminy:{x:300,y:398,name:'Luminy',em:'⚽'},castellane:{x:206,y:214,name:'Castellane',em:'🏋️'},
+ sormiou:{x:196,y:416,name:'Calanque de Sormiou',em:'🥾'},luminy:{x:300,y:398,name:'Luminy',em:'⚽'},castellane:{x:206,y:214,name:'Castellane · Vallier',em:'🤾'},
  coursju:{x:216,y:176,name:'Cours Julien',em:'👋'},longchamp:{x:236,y:112,name:'Palais Longchamp',em:'🏃'},velodrome:{x:190,y:286,name:'Stade Vélodrome',em:'⚽'},
 };
 </script>
