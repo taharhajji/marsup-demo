@@ -159,6 +159,15 @@ section{scroll-margin-top:90px}
 .avatar .hat.br{top:auto;bottom:-.35em;right:-.45em;transform:rotate(-8deg)}
 .fpin circle.b{fill:#fff;stroke:var(--blue);stroke-width:2.5}
 .fpin:hover circle.b,.fpin.on circle.b{r:20}
+.home-hero{gap:10px}
+.hero-tile{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;border-radius:20px;padding:14px;min-height:150px;transition:transform .15s}
+.hero-tile:active{transform:scale(.98)}
+.hero-tile.rank{background:linear-gradient(150deg,var(--navy),var(--blue));color:#fff}
+.hero-tile.shop{background:var(--surface);border:1.5px solid var(--line);color:var(--navy)}
+.hero-tile .big{font-family:var(--fd);font-size:40px;line-height:1;font-weight:800;letter-spacing:-.02em}
+.hero-tile .big sup{font-size:16px;vertical-align:top;margin-left:2px}
+.hero-tile .sub{font-size:12.5px;font-weight:600;color:rgba(255,255,255,.85)}
+.hero-tile.shop .sub{color:var(--ink-2)}
 .podium{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:8px;align-items:end}
 .pod{display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px 8px 12px;font-size:13px;font-weight:700;color:var(--navy)}
 .pod.p1{background:linear-gradient(180deg,var(--sky),var(--surface));border-color:var(--blue);padding-top:18px}
@@ -419,7 +428,7 @@ td .row{gap:10px}
   <div class="topbar-in">
     <a class="brand" href="#hero"><svg class="mark"><use href="#mu-mark"/></svg><span class="wordmark" style="font-size:24px">mars<span class="apos">’</span><span class="up">up</span></span></a>
     <nav>
-      <a href="#concept">Concept</a><a href="#populaires">Activités</a><a href="#maquettes">Maquettes</a><a href="#securite">Sécurité</a><a href="#admin">Admin</a>
+      <a href="#concept">Concept</a><a href="#populaires">Activités</a><a href="#progression">Points &amp; skins</a><a href="#maquettes">Maquettes</a><a href="#securite">Sécurité</a><a href="#admin">Admin</a>
     </nav>
     <button class="btn btn-primary btn-sm" data-open="signup">Créer mon profil</button>
   </div>
@@ -457,6 +466,15 @@ td .row{gap:10px}
       <section id="populaires">
         <div class="section-head"><div><div class="eyebrow">Cette semaine</div><h2>Activités populaires à Marseille</h2><p>Un aperçu de ce qui se passe près de toi. Clique sur une carte pour l'ouvrir dans l'application.</p></div></div>
         <div class="pop-grid" id="pop-grid"></div>
+      </section>
+
+      <section id="progression">
+        <div class="section-head"><div><div class="eyebrow">Jouer le jeu</div><h2>Des points, un classement, des skins</h2><p>Chaque participation rapporte des points sociaux. Ils font monter dans le classement de la semaine et s'échangent contre des skins 2D pour ton avatar. Rien ne s'achète avec de l'argent.</p></div></div>
+        <div class="steps">
+          <article class="step" data-open="rank" style="cursor:pointer"><div class="glyph" data-ico="trend"></div><div class="n">POINTS SOCIAUX</div><h3>Gagne en bougeant</h3><p>+50 par activité, +100 quand tu organises, +30 quand tu accueilles un nouveau, +20 par nouvel ami. Une série de 3 semaines offre +150.</p></article>
+          <article class="step" data-open="rank" style="cursor:pointer"><div class="glyph">🏆</div><div class="n">CLASSEMENT</div><h3>Amis, quartier, Marseille</h3><p>Podium hebdomadaire et niveaux : Nouveau, Régulier, Pilier du quartier, Légende de la Corniche. Remis à zéro chaque lundi.</p></article>
+          <article class="step" data-open="shop" style="cursor:pointer"><div class="glyph" data-ico="sparkles"></div><div class="n">BOUTIQUE</div><h3>Des skins 2D pour ton avatar</h3><p>Cadres, casquette, lunettes, couronne, fonds Calanques ou Vieux-Port. Visibles sur ton profil, la carte des amis et le classement.</p></article>
+        </div>
       </section>
 
       <section id="maquettes">
@@ -797,11 +815,11 @@ SCREENS.verify=()=>{const v=S.verify;let body='';
 SCREENS.home=()=>{const tonight=ACTS.filter(a=>a.tonight);const unread=NOTIFS.filter(n=>n.unread).length;
  return `<div class="sc"><div class="sc-head" style="margin-top:4px"><span class="brand"><svg class="mark" style="height:26px"><use href="#mu-mark"/></svg><span class="wordmark" style="font-size:22px">mars<span class="apos">’</span><span class="up">up</span></span></span><span class="grow"></span><button class="pill blue" data-go="shop" style="height:40px;padding:0 12px;font-size:13px">⭐ ${S.points}</button><button class="iconbtn" data-go="friends">${I('users')}${S.reqIn.length?'<span class="dot"></span>':''}</button><button class="iconbtn" data-go="notifications">${I('bell')}${unread&&!S.notifRead?'<span class="dot"></span>':''}</button></div>
  <div><h2 style="font-size:26px">Salut Lola 👋</h2><p class="muted">Mardi soir, 3 activités t'attendent à moins de 3 km.</p></div>
+ ${typeof heroRank==='function'?heroRank():''}
  <div class="search" data-go="activities">${I('search')}Rechercher une activité, un lieu, une personne…</div>
  <div class="ai-card" data-go="ai" style="cursor:pointer">${I('sparkles')}<div class="grow"><b>Demande à l'IA mars’up</b><span>« Je veux faire du sport mardi soir près du 5e »</span></div>${I('arrow')}</div>
  <div><div class="section-head" style="margin-bottom:10px"><h3 class="h3">Ce soir près de toi</h3><button class="tiny" style="color:var(--blue);font-weight:700" data-go="activities">Tout voir</button></div><div class="hscroll">${tonight.map(a=>actCard(a,'act-card act-mini')).join('')}</div></div>
  ${friendsRow()}
- <div class="card pad row" data-go="rank" style="cursor:pointer;gap:12px"><span class="avatar" style="background:var(--sky);font-size:20px">🏆</span><div class="col grow"><b style="font-size:14px">Classement de la semaine</b><span class="tiny">Tu es 4e parmi tes amis · ${S.points} points · 🔥 ${S.streak} semaines</span></div>${I('arrow')}</div>
  <div><div class="section-head" style="margin-bottom:10px"><h3 class="h3">Événements à venir</h3><button class="tiny" style="color:var(--blue);font-weight:700" data-go="events">Tout voir</button></div>${evtCard(E('beachday'))}</div>
  <div><div class="section-head" style="margin-bottom:10px"><h3 class="h3">Populaires à Marseille</h3></div><div class="hscroll">${ACTS.filter(a=>a.pop).map(a=>actCard(a,'act-card act-mini')).join('')}</div></div>
  <div><div class="section-head" style="margin-bottom:10px"><h3 class="h3">Nouveaux groupes pour toi</h3></div><div class="list card" style="padding:4px 14px">
@@ -1116,6 +1134,9 @@ const _created=ACTIONS.created;ACTIONS.created=()=>{_created();addPoints(100,'Ac
 const levelCard=()=>{const L=levelOf(S.points);const pct=L.next?Math.round((S.points-L.min)/(L.next[0]-L.min)*100):100;
  return `<div class="ai-card" style="align-items:stretch;gap:14px"><div class="row" style="gap:14px">${av('me','lg')}<div class="col grow"><span class="tiny" style="color:var(--sea);font-weight:800;letter-spacing:.08em">NIVEAU · ${L.name.toUpperCase()}</span><b style="font-size:26px;font-family:var(--fd)">${S.points} <span style="font-size:14px;font-weight:600;opacity:.8">points sociaux</span></b><span class="tiny" style="color:rgba(255,255,255,.8)">🔥 ${S.streak} semaines d'affilée · ${L.next?`${L.next[0]-S.points} pts avant « ${L.next[1]} »`:'niveau maximum'}</span></div></div><div class="progress" style="background:rgba(255,255,255,.2)"><i style="width:${pct}%;background:var(--sea)"></i></div></div>`;};
 
+const heroRank=()=>{const L=levelOf(S.points);const pct=L.next?Math.round((S.points-L.min)/(L.next[0]-L.min)*100):100;const fresh=SKINS.filter(x=>!S.owned.has(x.id)&&x.price<=S.points).slice(0,3);
+ return `<div class="grid2 home-hero"><button class="hero-tile rank" data-go="rank"><span class="tiny" style="color:var(--sea);font-weight:800;letter-spacing:.08em">CLASSEMENT · SEMAINE</span><b class="big">4<sup>e</sup></b><span class="sub">parmi tes amis · 🔥 ${S.streak} sem.</span><div class="progress" style="background:rgba(255,255,255,.22);margin-top:auto"><i style="width:${pct}%;background:var(--sea)"></i></div><span class="tiny" style="color:rgba(255,255,255,.85)">${S.points} pts · ${L.next?`${L.next[0]-S.points} avant « ${L.next[1]} »`:L.name}</span></button>
+ <button class="hero-tile shop" data-go="shop"><span class="tiny" style="color:var(--blue);font-weight:800;letter-spacing:.08em">BOUTIQUE · SKINS</span><div class="row" style="gap:6px;margin:4px 0 2px">${fresh.map(x=>avDeco(USERS.me,'sm',{ring:x.ring?x.id:null,hat:x.hat?x.id:null,bg:x.bg?x.id:null})).join('')||av('me','sm')}</div><span class="sub" style="color:var(--ink-2)">${fresh.length?`${fresh.length} skin${fresh.length>1?'s':''} à ta portée`:'Nouveaux skins bientôt'}</span><span class="pill blue" style="margin-top:auto;align-self:flex-start">⭐ ${S.points} pts à dépenser</span></button></div>`;};
 SCREENS.rank=()=>{const tab=S.rankTab||'Amis';const ids=tab==='Amis'?[...S.friends,'me']:tab==='Mon quartier'?['ines','camille','me','tom','nour']:Object.keys(USERS);
  const rows=ids.map(id=>U(id)).sort((a,b)=>(b.id==='me'?S.points:b.points)-(a.id==='me'?S.points:a.points));
  const pts=u=>u.id==='me'?S.points:u.points;const myRank=rows.findIndex(u=>u.id==='me')+1;const offset=tab==='Marseille'?408:tab==='Mon quartier'?34:0;

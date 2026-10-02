@@ -142,6 +142,15 @@ section{scroll-margin-top:90px}
 .avatar .hat.br{top:auto;bottom:-.35em;right:-.45em;transform:rotate(-8deg)}
 .fpin circle.b{fill:#fff;stroke:var(--blue);stroke-width:2.5}
 .fpin:hover circle.b,.fpin.on circle.b{r:20}
+.home-hero{gap:10px}
+.hero-tile{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;border-radius:20px;padding:14px;min-height:150px;transition:transform .15s}
+.hero-tile:active{transform:scale(.98)}
+.hero-tile.rank{background:linear-gradient(150deg,var(--navy),var(--blue));color:#fff}
+.hero-tile.shop{background:var(--surface);border:1.5px solid var(--line);color:var(--navy)}
+.hero-tile .big{font-family:var(--fd);font-size:40px;line-height:1;font-weight:800;letter-spacing:-.02em}
+.hero-tile .big sup{font-size:16px;vertical-align:top;margin-left:2px}
+.hero-tile .sub{font-size:12.5px;font-weight:600;color:rgba(255,255,255,.85)}
+.hero-tile.shop .sub{color:var(--ink-2)}
 .podium{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:8px;align-items:end}
 .pod{display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px 8px 12px;font-size:13px;font-weight:700;color:var(--navy)}
 .pod.p1{background:linear-gradient(180deg,var(--sky),var(--surface));border-color:var(--blue);padding-top:18px}
