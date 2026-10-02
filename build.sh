@@ -3,7 +3,7 @@
 #  - artifact.html : corps seul (publication Claude Artifact)
 #  - index.html    : page autonome (GitHub / Vercel)
 cd "$(dirname "$0")"
-cat src/p1_head.html src/p2_site.html src/p3_data.js src/p4a_app.js src/p4b_app.js src/p5_admin.js > artifact.html
+cat src/p1_head.html src/p2_site.html src/p3_data.js src/p4a_app.js src/p4b_app.js src/p4c_friends.js src/p4d_rank.js src/p5_admin.js > artifact.html
 {
   printf '%s\n' '<!doctype html>' '<html lang="fr">' '<head>' \
   '<meta charset="utf-8">' \

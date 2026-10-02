@@ -56,7 +56,7 @@ Terrain : entretiens de rue dans le centre de Marseille, 30 septembre et 1er oct
 - **1 · Profil vérifié** : sports, niveau, créneaux ; pièce d’identité + selfie via prestataire ; aucun document stocké
 - **2 · Matching sportif** : personnes, activités, groupes, événements ; distance, niveau, dispo, âge, intérêts ; pas de drague, chaque proposition explique pourquoi
 - **3 · Activité + chat** : un tap, chat ouvert, rendez-vous fixé
-- Autour : carte, événements partenaires, IA mars’up, admin / modération
+- Autour : carte, amis géolocalisés (entre amis acceptés seulement), classement et points sociaux, événements partenaires, IA mars’up, admin / modération
 - Pour Lola : c’est l’app qui fait le premier pas
 - → « Tahar vous le montre » · slide QR affichée
 
@@ -89,8 +89,9 @@ Terrain : entretiens de rue dans le centre de Marseille, 30 septembre et 1er oct
 1. **Inscription + vérification (1:00)** : Créer mon profil → sports + niveau (handball) → dispos → Vérifier mon identité → pièce → selfie → badge. *Aucun document chez nous.*
 2. **Matching (0:50)** : Accueil « Salut Lola » → Découvrir → Yanis 92 % + raisons → swipe droite → match. *Du sport, pas de la drague.*
 3. **Activité + chat (0:50)** : Activités → Hand loisir ou Sunset Run → Rejoindre → chat → « On se retrouve à 18h15 ? »
-4. **Carte + IA (0:40)** : marqueur Borély → activités du lieu ; IA « libre mardi soir » → 3 propositions
-5. **Sécurité + admin (0:40)** : Profil → confidentialité (visibilité, localisation, données) ; admin sur PC : valider, signalement, notification
+4. **Amis + carte (0:40)** : Amis → accepter la demande d’Inès, ajouter Mehdi → Carte des amis : Yanis au parc Borély en activité → « Rejoindre » ; montrer mode fantôme
+5. **Classement + boutique (0:30)** : Profil → Classement (4e chez tes amis, points gagnés) → Boutique : acheter la casquette avec les points, l’avatar change partout
+6. **Sécurité + admin (0:30)** : Profil → confidentialité (position amis, localisation, données) ; admin sur PC : valider, signalement, notification
 
 ### Fin
 - « Tout est en ligne : scannez le QR »

@@ -1,12 +1,13 @@
 <script>
 /* ---------- Site : activités populaires, sélecteur d'écrans, ouverture de la démo ---------- */
-const SCREEN_LIST=[['welcome','Landing app'],['signup','Inscription'],['verify','Vérification d\'identité'],['home','Accueil / fil'],['discover','Matching'],['activities','Activités'],['activity','Détail activité'],['messages','Messages'],['chat','Chat'],['map','Carte'],['events','Événements'],['notifications','Notifications'],['ai','IA mars’up'],['profile','Profil'],['settings','Confidentialité'],['admin','Dashboard admin']];
+const SCREEN_LIST=[['welcome','Landing app'],['signup','Inscription'],['verify','Vérification d\'identité'],['home','Accueil / fil'],['discover','Matching'],['activities','Activités'],['activity','Détail activité'],['messages','Messages'],['chat','Chat'],['map','Carte'],['friendsmap','Carte des amis'],['friends','Amis'],['rank','Classement'],['shop','Boutique'],['events','Événements'],['notifications','Notifications'],['ai','IA mars’up'],['profile','Profil'],['settings','Confidentialité'],['admin','Dashboard admin']];
 $('#pop-grid').innerHTML=ACTS.filter(a=>a.pop).map(a=>`<article class="pop-card" data-open="activity" data-id="${a.id}"><div class="scene">${scene(a.kind)}<span class="tag">${EMO[a.sport]} ${a.sport}</span></div><div class="body"><h3>${a.title}</h3><div class="meta"><span>📍 ${a.place}</span><span>🗓 ${a.day} ${a.time}</span></div><div class="meta"><span>👥 ${a.n} participants</span><span>${EMO[a.sport]} ${a.level}</span></div></div></article>`).join('');
 const chipsHtml=SCREEN_LIST.map(([id,l])=>`<button class="chip" data-open="${id}">${l}</button>`).join('');
 $('#screen-chips').innerHTML=chipsHtml;$('#phone-controls').innerHTML=chipsHtml;
 
 function openDemo(screen,id){
   if(screen==='admin'){document.body.classList.remove('demo-open');$('#admin').scrollIntoView({behavior:'smooth'});return;}
+  if(screen==='friendsmap'){S.mapMode='Amis';S.mapFriend=null;screen='map';}else if(screen==='map'){S.mapMode='Activités';}
   if(screen==='signup'){S.signup.step=1;}if(screen==='verify'){S.verify.step=0;}
   const p=id?{id}:screen==='activity'?{id:'sunset'}:screen==='chat'?{id:'running'}:{};
   go(screen,p);

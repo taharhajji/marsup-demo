@@ -6,7 +6,7 @@ const NOTAB=new Set(['welcome','signup','verify']);
 const $=s=>document.querySelector(s);
 const screenEl=$('#screen'),tabEl=$('#tabbar'),layerEl=$('#layer'),statusEl=$('#status');
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const av=(u,cls='')=>{const x=typeof u==='string'?U(u):u;return `<span class="avatar ${cls} av-${x.av}">${x.ini}</span>`};
+const av=(u,cls='')=>{const x=typeof u==='string'?U(u):u;return typeof avDeco==='function'?avDeco(x,cls,getDeco(x)):`<span class="avatar ${cls} av-${x.av}">${x.ini}</span>`};
 const stack=ids=>`<span class="stack">${ids.slice(0,4).map(i=>av(i)).join('')}</span>`;
 
 function go(screen,params={},push=true){
@@ -27,7 +27,7 @@ function render(){
   statusEl.classList.toggle('light',S.screen==='welcome');
   if(NOTAB.has(S.screen)){tabEl.hidden=true;}else{
     tabEl.hidden=false;
-    const active=S.screen==='user'?'profile':['activity','map','create'].includes(S.screen)?'activities':['chat'].includes(S.screen)?'messages':['event','events','notifications','ai','settings'].includes(S.screen)?'home':S.screen;
+    const active=['user','friends','rank','shop'].includes(S.screen)?'profile':['activity','map','create'].includes(S.screen)?'activities':['chat'].includes(S.screen)?'messages':['event','events','notifications','ai','settings'].includes(S.screen)?'home':S.screen;
     const unread=CHATS.reduce((n,c)=>n+c.unread,0);
     tabEl.innerHTML=TABS.map(([id,l,ic])=>`<button data-go="${id}" class="${active===id?'on':''}">${I(ic)}${l}${id==='messages'&&unread?'<span class="dot"></span>':''}</button>`).join('');
   }
@@ -114,11 +114,13 @@ SCREENS.verify=()=>{const v=S.verify;let body='';
  return `<div class="sc"><div class="sc-head">${v.step>0&&v.step<3?`<button class="iconbtn" data-act="vPrev">${I('back')}</button>`:''}<div class="grow"><div class="tiny" style="font-weight:700">Vérification d'identité</div><h2 style="font-size:21px">${['Pourquoi vérifier ?','Pièce d\'identité','Selfie de vérification','Compte validé'][v.step]}</h2></div></div><div class="progress"><i style="width:${[10,40,70,100][v.step]}%"></i></div>${body}</div>`;};
 
 SCREENS.home=()=>{const tonight=ACTS.filter(a=>a.tonight);const unread=NOTIFS.filter(n=>n.unread).length;
- return `<div class="sc"><div class="sc-head" style="margin-top:4px"><span class="brand"><svg class="mark" style="height:26px"><use href="#mu-mark"/></svg><span class="wordmark" style="font-size:22px">mars<span class="apos">’</span><span class="up">up</span></span></span><span class="grow"></span><button class="iconbtn" data-go="map">${I('pin')}</button><button class="iconbtn" data-go="notifications">${I('bell')}${unread&&!S.notifRead?'<span class="dot"></span>':''}</button></div>
+ return `<div class="sc"><div class="sc-head" style="margin-top:4px"><span class="brand"><svg class="mark" style="height:26px"><use href="#mu-mark"/></svg><span class="wordmark" style="font-size:22px">mars<span class="apos">’</span><span class="up">up</span></span></span><span class="grow"></span><button class="pill blue" data-go="shop" style="height:40px;padding:0 12px;font-size:13px">⭐ ${S.points}</button><button class="iconbtn" data-go="friends">${I('users')}${S.reqIn.length?'<span class="dot"></span>':''}</button><button class="iconbtn" data-go="notifications">${I('bell')}${unread&&!S.notifRead?'<span class="dot"></span>':''}</button></div>
  <div><h2 style="font-size:26px">Salut Lola 👋</h2><p class="muted">Mardi soir, 3 activités t'attendent à moins de 3 km.</p></div>
  <div class="search" data-go="activities">${I('search')}Rechercher une activité, un lieu, une personne…</div>
  <div class="ai-card" data-go="ai" style="cursor:pointer">${I('sparkles')}<div class="grow"><b>Demande à l'IA mars’up</b><span>« Je veux faire du sport mardi soir près du 5e »</span></div>${I('arrow')}</div>
  <div><div class="section-head" style="margin-bottom:10px"><h3 class="h3">Ce soir près de toi</h3><button class="tiny" style="color:var(--blue);font-weight:700" data-go="activities">Tout voir</button></div><div class="hscroll">${tonight.map(a=>actCard(a,'act-card act-mini')).join('')}</div></div>
+ ${friendsRow()}
+ <div class="card pad row" data-go="rank" style="cursor:pointer;gap:12px"><span class="avatar" style="background:var(--sky);font-size:20px">🏆</span><div class="col grow"><b style="font-size:14px">Classement de la semaine</b><span class="tiny">Tu es 4e parmi tes amis · ${S.points} points · 🔥 ${S.streak} semaines</span></div>${I('arrow')}</div>
  <div><div class="section-head" style="margin-bottom:10px"><h3 class="h3">Événements à venir</h3><button class="tiny" style="color:var(--blue);font-weight:700" data-go="events">Tout voir</button></div>${evtCard(E('beachday'))}</div>
  <div><div class="section-head" style="margin-bottom:10px"><h3 class="h3">Populaires à Marseille</h3></div><div class="hscroll">${ACTS.filter(a=>a.pop).map(a=>actCard(a,'act-card act-mini')).join('')}</div></div>
  <div><div class="section-head" style="margin-bottom:10px"><h3 class="h3">Nouveaux groupes pour toi</h3></div><div class="list card" style="padding:4px 14px">

@@ -154,6 +154,17 @@ section{scroll-margin-top:90px}
 .avatar.lg{width:88px;height:88px;font-size:30px}
 .avatar.xl{width:112px;height:112px;font-size:38px}
 .av-0{background:linear-gradient(135deg,#0F6BFF,#35B6FF)}.av-1{background:linear-gradient(135deg,#07234F,#0F6BFF)}.av-2{background:linear-gradient(135deg,#1F8EF1,#7CC8FF)}.av-3{background:linear-gradient(135deg,#0A4FC2,#2BB1FF)}.av-4{background:linear-gradient(135deg,#153B7A,#3B8BFF)}
+.avatar .hat{position:absolute;top:-.6em;right:-.45em;font-size:1.05em;line-height:1;transform:rotate(14deg);filter:drop-shadow(0 1px 1px rgba(0,0,0,.25));pointer-events:none}
+.avatar .hat.mid{top:.12em;right:auto;left:50%;transform:translateX(-50%);font-size:1.15em}
+.avatar .hat.br{top:auto;bottom:-.35em;right:-.45em;transform:rotate(-8deg)}
+.fpin circle.b{fill:#fff;stroke:var(--blue);stroke-width:2.5}
+.fpin:hover circle.b,.fpin.on circle.b{r:20}
+.podium{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:8px;align-items:end}
+.pod{display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px 8px 12px;font-size:13px;font-weight:700;color:var(--navy)}
+.pod.p1{background:linear-gradient(180deg,var(--sky),var(--surface));border-color:var(--blue);padding-top:18px}
+.pod .medal{font-size:20px}
+.me-row{background:var(--sky);margin:0 -14px;padding-left:14px!important;padding-right:14px!important;border-radius:12px}
+.tile.skin{min-height:122px}
 .verified{display:inline-flex;align-items:center;gap:4px;background:var(--sky);color:var(--blue);font-size:11px;font-weight:800;padding:3px 8px;border-radius:999px;font-family:var(--fd)}
 .verified .ico{width:13px;height:13px;stroke-width:2.6}
 .stack{display:flex}
@@ -676,7 +687,7 @@ const NOTAB=new Set(['welcome','signup','verify']);
 const $=s=>document.querySelector(s);
 const screenEl=$('#screen'),tabEl=$('#tabbar'),layerEl=$('#layer'),statusEl=$('#status');
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const av=(u,cls='')=>{const x=typeof u==='string'?U(u):u;return `<span class="avatar ${cls} av-${x.av}">${x.ini}</span>`};
+const av=(u,cls='')=>{const x=typeof u==='string'?U(u):u;return typeof avDeco==='function'?avDeco(x,cls,getDeco(x)):`<span class="avatar ${cls} av-${x.av}">${x.ini}</span>`};
 const stack=ids=>`<span class="stack">${ids.slice(0,4).map(i=>av(i)).join('')}</span>`;
 
 function go(screen,params={},push=true){
@@ -697,7 +708,7 @@ function render(){
   statusEl.classList.toggle('light',S.screen==='welcome');
   if(NOTAB.has(S.screen)){tabEl.hidden=true;}else{
     tabEl.hidden=false;
-    const active=S.screen==='user'?'profile':['activity','map','create'].includes(S.screen)?'activities':['chat'].includes(S.screen)?'messages':['event','events','notifications','ai','settings'].includes(S.screen)?'home':S.screen;
+    const active=['user','friends','rank','shop'].includes(S.screen)?'profile':['activity','map','create'].includes(S.screen)?'activities':['chat'].includes(S.screen)?'messages':['event','events','notifications','ai','settings'].includes(S.screen)?'home':S.screen;
     const unread=CHATS.reduce((n,c)=>n+c.unread,0);
     tabEl.innerHTML=TABS.map(([id,l,ic])=>`<button data-go="${id}" class="${active===id?'on':''}">${I(ic)}${l}${id==='messages'&&unread?'<span class="dot"></span>':''}</button>`).join('');
   }
@@ -784,11 +795,13 @@ SCREENS.verify=()=>{const v=S.verify;let body='';
  return `<div class="sc"><div class="sc-head">${v.step>0&&v.step<3?`<button class="iconbtn" data-act="vPrev">${I('back')}</button>`:''}<div class="grow"><div class="tiny" style="font-weight:700">Vérification d'identité</div><h2 style="font-size:21px">${['Pourquoi vérifier ?','Pièce d\'identité','Selfie de vérification','Compte validé'][v.step]}</h2></div></div><div class="progress"><i style="width:${[10,40,70,100][v.step]}%"></i></div>${body}</div>`;};
 
 SCREENS.home=()=>{const tonight=ACTS.filter(a=>a.tonight);const unread=NOTIFS.filter(n=>n.unread).length;
- return `<div class="sc"><div class="sc-head" style="margin-top:4px"><span class="brand"><svg class="mark" style="height:26px"><use href="#mu-mark"/></svg><span class="wordmark" style="font-size:22px">mars<span class="apos">’</span><span class="up">up</span></span></span><span class="grow"></span><button class="iconbtn" data-go="map">${I('pin')}</button><button class="iconbtn" data-go="notifications">${I('bell')}${unread&&!S.notifRead?'<span class="dot"></span>':''}</button></div>
+ return `<div class="sc"><div class="sc-head" style="margin-top:4px"><span class="brand"><svg class="mark" style="height:26px"><use href="#mu-mark"/></svg><span class="wordmark" style="font-size:22px">mars<span class="apos">’</span><span class="up">up</span></span></span><span class="grow"></span><button class="pill blue" data-go="shop" style="height:40px;padding:0 12px;font-size:13px">⭐ ${S.points}</button><button class="iconbtn" data-go="friends">${I('users')}${S.reqIn.length?'<span class="dot"></span>':''}</button><button class="iconbtn" data-go="notifications">${I('bell')}${unread&&!S.notifRead?'<span class="dot"></span>':''}</button></div>
  <div><h2 style="font-size:26px">Salut Lola 👋</h2><p class="muted">Mardi soir, 3 activités t'attendent à moins de 3 km.</p></div>
  <div class="search" data-go="activities">${I('search')}Rechercher une activité, un lieu, une personne…</div>
  <div class="ai-card" data-go="ai" style="cursor:pointer">${I('sparkles')}<div class="grow"><b>Demande à l'IA mars’up</b><span>« Je veux faire du sport mardi soir près du 5e »</span></div>${I('arrow')}</div>
  <div><div class="section-head" style="margin-bottom:10px"><h3 class="h3">Ce soir près de toi</h3><button class="tiny" style="color:var(--blue);font-weight:700" data-go="activities">Tout voir</button></div><div class="hscroll">${tonight.map(a=>actCard(a,'act-card act-mini')).join('')}</div></div>
+ ${friendsRow()}
+ <div class="card pad row" data-go="rank" style="cursor:pointer;gap:12px"><span class="avatar" style="background:var(--sky);font-size:20px">🏆</span><div class="col grow"><b style="font-size:14px">Classement de la semaine</b><span class="tiny">Tu es 4e parmi tes amis · ${S.points} points · 🔥 ${S.streak} semaines</span></div>${I('arrow')}</div>
  <div><div class="section-head" style="margin-bottom:10px"><h3 class="h3">Événements à venir</h3><button class="tiny" style="color:var(--blue);font-weight:700" data-go="events">Tout voir</button></div>${evtCard(E('beachday'))}</div>
  <div><div class="section-head" style="margin-bottom:10px"><h3 class="h3">Populaires à Marseille</h3></div><div class="hscroll">${ACTS.filter(a=>a.pop).map(a=>actCard(a,'act-card act-mini')).join('')}</div></div>
  <div><div class="section-head" style="margin-bottom:10px"><h3 class="h3">Nouveaux groupes pour toi</h3></div><div class="list card" style="padding:4px 14px">
@@ -894,20 +907,22 @@ const AI_ANSWERS=[
  {q:/.*/,a:()=>`Je peux t'aider à trouver une activité, des personnes compatibles, un événement, ou créer un groupe selon tes disponibilités. Dis-moi quand tu es libre et ce que tu aimes.`,tail:''},
 ];
 SCREENS.ai=()=>`<div class="sc" style="min-height:100%"><div class="sc-head" style="position:sticky;top:0;background:var(--bg);z-index:2"><button class="iconbtn" data-back>${I('back')}</button><span class="avatar" style="background:linear-gradient(135deg,var(--navy),var(--blue))">${I('sparkles')}</span><div class="col grow"><b style="font-size:15px">IA mars’up</b><span class="tiny">Ton coach de quartier · répond en quelques secondes</span></div></div>
- <div class="bubbles">${S.aiLog.length?S.aiLog.join(''):`<div class="bub">Salut Lola ! Je connais toutes les activités de Marseille et ton profil. Pose-moi une question ou choisis une suggestion 👇</div>`}</div>
- <div class="sugg" style="margin-top:auto">${['Je suis nouvelle à Marseille, j\'ai 20 ans et je cherche à faire du sport mardi soir.','Crée-moi un groupe','Qui me correspond ?','Quoi faire ce week-end côté mer ?'].map(q=>`<button data-act="ask" data-v="${esc(q)}">${q}</button>`).join('')}</div>
+ <div class="bubbles">${S.aiLog.length?S.aiLog.join(''):`<div class="bub">Salut Lola ! Je connais toutes les activités de Marseille, tes amis et ton profil. Pose-moi une question ou choisis une suggestion 👇</div>`}</div>
+ <div class="sugg" style="margin-top:auto">${['Je suis nouvelle à Marseille, j\'ai 20 ans et je cherche à faire du sport mardi soir.','Crée-moi un groupe','Qui me correspond ?','Où sont mes amis ?','Quoi faire ce week-end côté mer ?'].map(q=>`<button data-act="ask" data-v="${esc(q)}">${q}</button>`).join('')}</div>
  <div class="composer"><input class="input" id="ai-input" placeholder="Demande à l'IA mars’up…"><button class="iconbtn blue" data-act="askInput">${I('send')}</button></div>
  <p class="tiny" style="text-align:center">L'IA n'a accès qu'aux données de ton profil et aux activités publiques. Rien n'est partagé avec d'autres membres.</p></div>`;
 
 const NOTIF_ICO={match:'heart',msg:'chat',near:'pin',event:'calendar',ai:'sparkles',invite:'users',verif:'shield'};
 SCREENS.notifications=()=>{S.notifRead=true;return `<div class="sc">${head('Notifications',`<button class="iconbtn" data-go="settings">${I('gear')}</button>`)}
  <div class="seg"><button class="on">Toutes</button><button>Matchs</button><button>Messages</button><button>Activités</button></div>
- <div><div class="tiny" style="font-weight:800;margin-bottom:4px">AUJOURD'HUI</div><div>${NOTIFS.slice(0,4).map(n=>`<div class="notif ${n.unread?'unread':''}" data-go="${n.go}" ${n.id?`data-id="${n.id}"`:''} style="cursor:pointer"><span class="ic">${I(NOTIF_ICO[n.t])}</span><div class="col grow"><b style="font-size:14px">${n.title}</b><span class="muted">${n.sub}</span><span class="tiny">${n.time}</span></div></div>`).join('')}</div></div>
- <div><div class="tiny" style="font-weight:800;margin-bottom:4px">CETTE SEMAINE</div><div>${NOTIFS.slice(4).map(n=>`<div class="notif" data-go="${n.go}" ${n.id?`data-id="${n.id}"`:''} style="cursor:pointer"><span class="ic">${I(NOTIF_ICO[n.t])}</span><div class="col grow"><b style="font-size:14px">${n.title}</b><span class="muted">${n.sub}</span><span class="tiny">${n.time}</span></div></div>`).join('')}</div></div></div>`;};
+ <div><div class="tiny" style="font-weight:800;margin-bottom:4px">AUJOURD'HUI</div><div>${NOTIFS.slice(0,6).map(n=>`<div class="notif ${n.unread?'unread':''}" ${n.act?`data-act="${n.act}"`:`data-go="${n.go}"`} ${n.id?`data-id="${n.id}"`:''} style="cursor:pointer"><span class="ic">${I(NOTIF_ICO[n.t])}</span><div class="col grow"><b style="font-size:14px">${n.title}</b><span class="muted">${n.sub}</span><span class="tiny">${n.time}</span></div></div>`).join('')}</div></div>
+ <div><div class="tiny" style="font-weight:800;margin-bottom:4px">CETTE SEMAINE</div><div>${NOTIFS.slice(6).map(n=>`<div class="notif" ${n.act?`data-act="${n.act}"`:`data-go="${n.go}"`} ${n.id?`data-id="${n.id}"`:''} style="cursor:pointer"><span class="ic">${I(NOTIF_ICO[n.t])}</span><div class="col grow"><b style="font-size:14px">${n.title}</b><span class="muted">${n.sub}</span><span class="tiny">${n.time}</span></div></div>`).join('')}</div></div></div>`;};
 
 const profileBody=(u,me)=>`<div class="sc" style="padding-top:0"><div class="prof-head"><div class="sc-head" style="color:#fff">${me?`<span class="brand"><svg class="mark" style="height:26px"><use href="#mu-mark"/></svg></span><span class="grow"></span><button class="iconbtn" data-go="settings" style="background:rgba(255,255,255,.15);border:0;color:#fff">${I('gear')}</button>`:`<button class="iconbtn" data-back style="background:rgba(255,255,255,.15);border:0;color:#fff">${I('back')}</button><span class="grow"></span><button class="iconbtn" data-act="userMenu" data-id="${u.id}" style="background:rgba(255,255,255,.15);border:0;color:#fff">${I('more')}</button>`}</div></div>
- <div class="prof-card">${av(u,'xl')}<div class="h3" style="font-size:24px">${u.name}, ${u.age} ${u.verified?`<span class="verified">${I('check')} Profil vérifié</span>`:'<span class="pill warn">Non vérifié</span>'}</div><div class="muted">📍 ${u.sector}</div></div>
- ${me?`<div class="statrow card pad"><div><b>14</b><span>activités</span></div><div><b>6</b><span>matchs</span></div><div><b>3</b><span>groupes</span></div></div>`:`<div class="grid2"><button class="btn btn-ghost" data-act="inviteUser" data-id="${u.id}">${I('activity')} Rejoindre une activité</button><button class="btn btn-primary" data-go="chat" data-id="${C(u.id)?u.id:'yanis'}">${I('chat')} Discuter</button></div>`}
+ <div class="prof-card">${av(u,'xl')}<div class="h3" style="font-size:24px">${u.name}, ${u.age} ${u.points!=null||me?`<span class="pill" style="font-size:11px">${levelOf(me?S.points:u.points).name}</span>`:''} ${u.verified?`<span class="verified">${I('check')} Profil vérifié</span>`:'<span class="pill warn">Non vérifié</span>'}</div><div class="muted">📍 ${u.sector}</div></div>
+ ${me?`<div class="statrow card pad"><div><b>14</b><span>activités</span></div><div data-go="friends" style="cursor:pointer"><b>${S.friends.size}</b><span>amis</span></div><div data-go="rank" style="cursor:pointer"><b>${S.points}</b><span>points</span></div></div>
+ <div class="grid2"><button class="btn btn-ghost" data-go="rank">${I('trend')} Classement</button><button class="btn btn-outline" data-go="shop">${I('sparkles')} Boutique</button></div>
+ <div class="grid2"><button class="btn btn-ghost" data-go="friends">${I('users')} Mes amis</button><button class="btn btn-outline" data-act="mapFriends">${I('pin')} Carte des amis</button></div>`:`${friendBtn(u.id,'btn-block')}<div class="grid2"><button class="btn btn-ghost" data-act="inviteUser" data-id="${u.id}">${I('activity')} Rejoindre une activité</button><button class="btn btn-primary" data-go="chat" data-id="${C(u.id)?u.id:'yanis'}">${I('chat')} Discuter</button></div>`}
  <div class="card pad" style="display:flex;flex-direction:column;gap:12px">
   <div><div class="tiny" style="font-weight:800;margin-bottom:6px">SPORTS & NIVEAU</div><div class="chips" style="gap:6px">${sportsPills(u)}</div></div>
   <div><div class="tiny" style="font-weight:800;margin-bottom:6px">CENTRES D'INTÉRÊT</div><div class="chips" style="gap:6px">${u.interests.map(i=>`<span class="pill">${i}</span>`).join('')}</div></div>
@@ -922,7 +937,7 @@ SCREENS.user=({id})=>profileBody(U(id)||USERS.yanis,false);
 SCREENS.settings=()=>{const s=S.settings;const row=(ic,t,sub,key)=>`<div class="item">${I(ic)}<div class="col grow"><b style="font-size:14px">${t}</b><span class="tiny">${sub}</span></div><span class="toggle ${s[key]?'on':''}" data-act="setting" data-v="${key}"></span></div>`;
  return `<div class="sc">${head('Confidentialité & sécurité')}
  <div><div class="tiny" style="font-weight:800;margin-bottom:6px">VISIBILITÉ DU PROFIL</div><div class="seg">${['Tout le monde','Membres vérifiés','Mes groupes'].map(x=>`<button class="${s.vis===x?'on':''}" data-act="vis" data-v="${x}">${x}</button>`).join('')}</div></div>
- <div class="card pad list settings" style="padding-block:2px">${row('eye','Afficher mes disponibilités','Visible sur ton profil public','dispo')}${row('pin','Localisation approximative','Arrondissement uniquement, jamais l\'adresse','geo')}${row('bell','Notifications push','Matchs, messages, rappels d\'événements','notif')}${row('chart','Statistiques d\'usage anonymisées','Aide à améliorer mars’up · désactivé par défaut','stats')}</div>
+ <div class="card pad list settings" style="padding-block:2px">${row('users','Position partagée avec mes amis','Amis acceptés uniquement, au quartier près par défaut','shareLoc')}${row('eye','Afficher mes disponibilités','Visible sur ton profil public','dispo')}${row('pin','Localisation approximative','Arrondissement uniquement, jamais l\'adresse','geo')}${row('bell','Notifications push','Matchs, messages, rappels d\'événements','notif')}${row('chart','Statistiques d\'usage anonymisées','Aide à améliorer mars’up · désactivé par défaut','stats')}</div>
  <div><div class="tiny" style="font-weight:800;margin-bottom:6px">MES DONNÉES (RGPD)</div><div class="card pad list settings" style="padding-block:2px"><div class="item" data-act="exportData" style="cursor:pointer">${I('download')}<div class="col grow"><b style="font-size:14px">Exporter mes données</b><span class="tiny">Archive envoyée par e-mail sous 48 h</span></div>${I('arrow')}</div><div class="item" data-act="consent" style="cursor:pointer">${I('shield')}<div class="col grow"><b style="font-size:14px">Gérer mes consentements</b><span class="tiny">Vérification d'identité, géolocalisation, communications</span></div>${I('arrow')}</div><div class="item" data-act="deleteAccount" style="cursor:pointer;color:var(--bad)">${I('trash')}<div class="col grow"><b style="font-size:14px">Supprimer mon compte</b><span class="tiny">Effacement complet sous 30 jours</span></div></div></div></div>
  <div><div class="tiny" style="font-weight:800;margin-bottom:6px">SÉCURITÉ</div><div class="card pad list settings" style="padding-block:2px"><div class="item">${I('ban')}<div class="col grow"><b style="font-size:14px">Comptes bloqués</b><span class="tiny">1 compte</span></div>${I('arrow')}</div><div class="item">${I('lock')}<div class="col grow"><b style="font-size:14px">Connexion & appareils</b><span class="tiny">Double authentification activée</span></div>${I('arrow')}</div><div class="item" data-act="report" data-id="" style="cursor:pointer">${I('flag')}<div class="col grow"><b style="font-size:14px">Signaler un problème</b><span class="tiny">Réponse de la modération sous 24 h</span></div>${I('arrow')}</div></div></div></div>`;};
 
@@ -999,14 +1014,147 @@ const endDrag=()=>{if(!drag)return;const {c,dx}=drag;drag=null;c.classList.remov
 screenEl.addEventListener('pointerup',endDrag);screenEl.addEventListener('pointercancel',endDrag);
 </script>
 <script>
+/* ---------- Amis & géolocalisation (type Snap Map, limitée aux amis acceptés) ---------- */
+Object.assign(USERS.me,{loc:{x:200,y:222},place:'Castellane'});
+const FLOC={yanis:['borely','il y a 3 min','sunset','precise'],lea:['catalans','il y a 12 min','bv','precise'],ines:['auffes','il y a 25 min',null,'area'],mehdi:['prado','il y a 1 min','basket','precise'],camille:['longchamp','il y a 40 min',null,'area'],tom:['pointerouge','il y a 8 min','paddle','precise'],nour:['luminy','il y a 2 h',null,'area'],hugo:['sormiou','il y a 1 h',null,'area']};
+Object.entries(FLOC).forEach(([id,[p,seen,doing,share]])=>Object.assign(USERS[id],{loc:PLACES[p],place:PLACES[p].name,seen,doing,share}));
+Object.assign(S,{friends:new Set(['yanis','lea','camille']),reqIn:['ines','tom'],reqOut:new Set(),ghost:false,shareMode:'Quartier',mapMode:'Activités',mapFriend:null});
+S.settings.shareLoc=true;
+NOTIFS.unshift(
+ {t:'friend',title:"Inès t'a envoyé une demande d'ami",sub:'Yoga · Marseille 5e · 2 activités en commun',time:'il y a 2 min',unread:true,act:'openFriends'},
+ {t:'near',title:'Yanis est au Parc Borély',sub:'À 1,8 km de toi, en Sunset Run. Tu le rejoins ?',time:'il y a 10 min',unread:true,act:'focusFriend',id:'yanis'});
+NOTIF_ICO.friend='users';
+AI_ANSWERS.unshift({q:/ami|pote|copain|copine/i,a:()=>'Trois de tes amis bougent en ce moment :',people:['yanis','lea','mehdi'],tail:'Ouvre la carte des amis pour les rejoindre, ou ajoute de nouveaux amis depuis Découvrir.'});
+
+const AVC=['#0F6BFF','#07234F','#1F8EF1','#0A4FC2','#153B7A'];
+const AREA=u=>u.sector.replace('Marseille ','');
+const whereTxt=u=>u.doing?`🟢 En activité · ${A(u.doing).title}`:u.share==='precise'?`📍 ${u.place} · ${u.seen}`:`📍 Quartier ${AREA(u)} · ${u.seen}`;
+const relation=id=>S.friends.has(id)?'friend':S.reqOut.has(id)?'sent':S.reqIn.includes(id)?'incoming':'none';
+const friendBtn=(id,cls='')=>{const r=relation(id);return r==='friend'?`<button class="btn btn-ghost ${cls}" data-act="friendMenu" data-id="${id}">${I('check')} Amis</button>`:r==='sent'?`<button class="btn btn-outline ${cls}" data-act="cancelReq" data-id="${id}" style="color:var(--ink-2)">${I('clock')} Demande envoyée</button>`:r==='incoming'?`<button class="btn btn-primary ${cls}" data-act="acceptReq" data-id="${id}">${I('check')} Accepter la demande d'ami</button>`:`<button class="btn btn-outline ${cls}" data-act="addFriend" data-id="${id}">${I('plus')} Ajouter en ami</button>`;};
+const friendsRow=()=>`<div><div class="section-head" style="margin-bottom:10px"><h3 class="h3">Tes amis en ce moment</h3><button class="tiny" style="color:var(--blue);font-weight:700" data-act="mapFriends">Carte des amis</button></div><div class="hscroll">${[...S.friends].map(id=>{const u=U(id);return `<button style="display:flex;flex-direction:column;align-items:center;gap:5px;width:74px" data-act="focusFriend" data-id="${id}"><span style="position:relative">${av(u)}${u.doing?'<span style="position:absolute;right:-1px;bottom:-1px;width:14px;height:14px;border-radius:50%;background:var(--good);border:2px solid var(--bg)"></span>':''}</span><b style="font-size:12px">${u.name}</b><span class="tiny" style="font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:74px">${u.doing?A(u.doing).sport:u.share==='precise'?u.place:'Quartier '+AREA(u)}</span></button>`}).join('')}<button style="display:flex;flex-direction:column;align-items:center;gap:5px;width:74px" data-go="friends"><span class="avatar" style="background:var(--sky);color:var(--blue)">${I('plus')}</span><b style="font-size:12px">Ajouter</b><span class="tiny" style="font-size:10.5px">${S.reqIn.length} demande${S.reqIn.length>1?'s':''}</span></button></div></div>`;
+
+SCREENS.friends=()=>{const fr=[...S.friends];const sugg=Object.keys(USERS).filter(id=>id!=='me'&&!S.friends.has(id)&&!S.reqIn.includes(id));
+ const row=(id,right)=>{const u=U(id);return `<div class="item">${av(u)}<div class="col grow" data-go="user" data-id="${id}" style="cursor:pointer"><b style="font-size:14.5px">${u.name}, ${u.age} ${u.verified?`<span class="verified">${I('check')}</span>`:''}</b><span class="tiny" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${whereTxt(u)}</span></div>${right}</div>`};
+ const active=fr.filter(id=>U(id).doing).length;
+ return `<div class="sc">${head('Amis',`<button class="iconbtn" data-act="invite">${I('nav')}</button>`)}
+ <div class="search">${I('search')}Rechercher un prénom, un pseudo…</div>
+ <div class="card pad row" data-act="mapFriends" style="cursor:pointer;gap:12px;background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;border:0">${I('pin')}<div class="col grow"><b style="font-size:14px">Carte des amis</b><span class="tiny" style="color:rgba(255,255,255,.8)">${active} ami${active>1?'s':''} en activité · ${S.ghost?'toi : mode fantôme':'toi : '+S.shareMode.toLowerCase()}</span></div>${I('arrow')}</div>
+ ${S.reqIn.length?`<div><div class="h3" style="margin-bottom:6px">Demandes reçues <span class="pill blue">${S.reqIn.length}</span></div><div class="list card" style="padding:0 14px">${S.reqIn.map(id=>row(id,`<div class="row" style="gap:6px"><button class="iconbtn" data-act="declineReq" data-id="${id}" aria-label="Refuser">${I('x')}</button><button class="iconbtn blue" data-act="acceptReq" data-id="${id}" aria-label="Accepter">${I('check')}</button></div>`)).join('')}</div></div>`:''}
+ <div><div class="h3" style="margin-bottom:6px">Mes amis <span class="pill">${fr.length}</span></div><div class="list card" style="padding:0 14px">${fr.map(id=>row(id,`<div class="row" style="gap:6px"><button class="iconbtn" data-act="focusFriend" data-id="${id}" aria-label="Voir sur la carte">${I('pin')}</button><button class="iconbtn" data-go="chat" data-id="${C(id)?id:'yanis'}" aria-label="Message">${I('chat')}</button></div>`)).join('')||'<div class="item muted">Ajoute tes premiers amis ci-dessous.</div>'}</div></div>
+ <div><div class="h3" style="margin-bottom:4px">Suggestions</div><p class="tiny" style="margin-bottom:8px">Personnes rencontrées en activité ou compatibles avec ton profil.</p><div class="list card" style="padding:0 14px">${sugg.map(id=>{const u=U(id);const why=u.score?`Match ${u.score} %`:'Activité en commun';return `<div class="item">${av(u)}<div class="col grow" data-go="user" data-id="${id}" style="cursor:pointer"><b style="font-size:14.5px">${u.name}, ${u.age}</b><span class="tiny">${why} · ${u.sports.map(s=>EMO[s[0]]).join(' ')}</span></div>${S.reqOut.has(id)?`<button class="pill" data-act="cancelReq" data-id="${id}">Envoyée</button>`:`<button class="pill blue" data-act="addFriend" data-id="${id}">${I('plus')} Ajouter</button>`}</div>`}).join('')||'<div class="item muted">Aucune suggestion pour le moment.</div>'}</div></div>
+ <div class="card pad row" style="gap:10px;background:var(--sky);border-color:transparent">${I('lock')}<span class="tiny" style="color:var(--blue)">Seuls tes amis acceptés voient ta position, au quartier près par défaut. Mode fantôme disponible à tout moment.</span></div></div>`;};
+
+const mapSeg=()=>`<div class="seg">${['Activités','Amis'].map(m=>`<button class="${S.mapMode===m?'on':''}" data-act="mapMode" data-v="${m}">${m==='Amis'?'👥':'📍'} ${m}</button>`).join('')}</div>`;
+const _mapActivities=SCREENS.map;
+SCREENS.map=()=>S.mapMode==='Amis'?mapFriendsScreen():_mapActivities().replace('<div class="mapwrap">',mapSeg()+'<div class="mapwrap">');
+function mapSvg(inner,label){const land='M130 0H360V440H260c-20-12-45-22-70-14s-50-21-68-44c-14-20-12-52-6-82 6-28-20-48-30-74-10-24 6-44 26-56l58-4c5-1 6-16 0-17l-58-3c-8-16-8-34-4-46 4-20 10-60 22-100z';
+ return `<svg viewBox="0 0 360 440" role="img" aria-label="${label}"><defs><pattern id="gridf" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#fff" stroke-width=".8" opacity=".45"/></pattern></defs><rect width="360" height="440" fill="#BFDDFF"/><path d="M0 120c30-10 50 10 80 0M0 260c30-12 60 12 90 0M0 400c30-10 50 10 80 0" stroke="#fff" stroke-width="2" fill="none" opacity=".7"/><path d="${land}" fill="#F4F8FE"/><path d="${land}" fill="url(#gridf)"/><ellipse cx="44" cy="150" rx="18" ry="8" fill="#F4F8FE"/><ellipse cx="52" cy="176" rx="22" ry="9" fill="#F4F8FE"/><circle cx="70" cy="158" r="5" fill="#F4F8FE"/><ellipse cx="150" cy="332" rx="30" ry="20" fill="#D7EFD9"/><ellipse cx="236" cy="112" rx="22" ry="14" fill="#D7EFD9"/><ellipse cx="300" cy="400" rx="30" ry="16" fill="#D7EFD9"/><path d="M182 160L206 214 190 286 152 332M206 214L300 398M182 160L236 112M112 184L98 216 126 300 128 380 196 416M206 214L216 176M130 60L182 160" stroke="#DCE6F5" stroke-width="5" fill="none" stroke-linecap="round"/><g font-family="Manrope,sans-serif" font-size="9" fill="#4A5B78" font-weight="700"><text x="196" y="140">Vieux-Port</text><text x="60" y="235">Corniche</text><text x="138" y="290">Prado</text><text x="140" y="398">Pointe Rouge</text><text x="210" y="434">Calanques</text><text x="28" y="140">Frioul</text><text x="226" y="100">Longchamp</text></g>${inner}</svg>`;}
+function mapFriendsScreen(){const fr=[...S.friends].map(U);const sel=S.mapFriend?U(S.mapFriend):null;const active=fr.filter(u=>u.doing).length;
+ const pins=fr.map(u=>`<g class="pin fpin ${S.mapFriend===u.id?'on':''}" data-act="focusFriend" data-id="${u.id}" transform="translate(${u.loc.x} ${u.loc.y})">${u.share==='area'?'<circle r="28" fill="#0F6BFF" opacity=".10"/>':''}<circle class="b" r="17"/><circle r="13" fill="${AVC[u.av]}"/><text text-anchor="middle" dy="4" font-size="10" font-weight="800" fill="#fff" font-family="Outfit,sans-serif">${u.ini}</text>${u.doing?'<circle cx="13" cy="-13" r="6" fill="#1BA672" stroke="#fff" stroke-width="2"/>':''}</g>`).join('');
+ const me=S.ghost?'':`<g transform="translate(200 222)"><circle r="24" fill="#0F6BFF" opacity=".18"><animate attributeName="r" values="18;34;18" dur="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" values=".25;0;.25" dur="2.4s" repeatCount="indefinite"/></circle><circle r="17" fill="#fff"/><circle r="13" fill="#0F6BFF"/><text text-anchor="middle" dy="4" font-size="10" font-weight="800" fill="#fff" font-family="Outfit,sans-serif">${USERS.me.ini}</text><text y="32" text-anchor="middle" font-size="9" font-weight="800" fill="#07234F" font-family="Manrope,sans-serif">Toi</text></g>`;
+ return `<div class="sc">${head('Carte',`<button class="iconbtn ${S.ghost?'blue':''}" data-act="ghost" aria-label="Mode fantôme">${I('eye')}</button>`,false)}${mapSeg()}
+ <div class="mapwrap"><div class="map-float">${S.ghost?'<span class="chip on" style="background:var(--navy)">👻 Mode fantôme · invisible pour tes amis</span>':`<span class="chip">👥 ${fr.length} amis</span><span class="chip">🟢 ${active} en activité</span><span class="chip">Toi · ${S.shareMode}</span>`}</div>${mapSvg(pins+me,'Carte des amis')}</div>
+ ${sel?friendCard(sel):`<div class="hscroll">${fr.map(u=>`<button class="card pad" style="width:140px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding:12px" data-act="focusFriend" data-id="${u.id}">${av(u)}<b style="font-size:13px">${u.name}</b><span class="tiny" style="font-size:11px">${u.doing?'🟢 '+A(u.doing).sport:u.share==='precise'?u.place:'Quartier '+AREA(u)}</span></button>`).join('')}</div>`}
+ <div class="card pad" style="display:flex;flex-direction:column;gap:12px"><div class="row" style="justify-content:space-between;gap:10px"><div class="col"><b style="font-size:14px">Ma position</b><span class="tiny">Visible par mes amis uniquement</span></div><div class="seg" style="width:auto">${['Quartier','Précis'].map(m=>`<button class="${S.shareMode===m?'on':''}" data-act="shareMode" data-v="${m}">${m}</button>`).join('')}</div></div><div class="row" style="justify-content:space-between"><div class="col"><b style="font-size:14px">Mode fantôme</b><span class="tiny">Tu vois tes amis, ils ne te voient pas</span></div><span class="toggle ${S.ghost?'on':''}" data-act="ghost"></span></div></div>
+ <p class="tiny" style="text-align:center">Position jamais visible par les autres membres ni affichée à l'adresse exacte. Désactivable dans Confidentialité.</p></div>`;}
+function friendCard(u){const a=u.doing&&A(u.doing);return `<div class="card pad fade" style="display:flex;flex-direction:column;gap:10px"><div class="row">${av(u)}<div class="col grow" data-go="user" data-id="${u.id}" style="cursor:pointer"><b style="font-size:15px">${u.name}, ${u.age} ${u.verified?`<span class="verified">${I('check')}</span>`:''}</b><span class="tiny">${u.doing?`📍 ${u.place} · ${u.seen}`:whereTxt(u)}</span></div><button class="iconbtn" data-act="focusFriend" data-id="" aria-label="Fermer">${I('x')}</button></div>${a?`<div class="row" style="background:var(--sky);border-radius:12px;padding:10px;cursor:pointer" data-go="activity" data-id="${a.id}"><span style="font-size:20px">${EMO[a.sport]}</span><div class="col grow"><b style="font-size:13px">En activité · ${a.title}</b><span class="tiny">${a.place} · ${a.n}/${a.max} participants · ${a.level}</span></div>${I('arrow')}</div>`:''}<div class="grid2"><button class="btn btn-ghost btn-sm" data-go="chat" data-id="${C(u.id)?u.id:'yanis'}">${I('chat')} Message</button>${a&&!S.joined.has(a.id)?`<button class="btn btn-primary btn-sm" data-act="join" data-id="${a.id}">Rejoindre ${u.name}</button>`:`<button class="btn btn-primary btn-sm" data-act="inviteUser" data-id="${u.id}">Proposer une activité</button>`}</div></div>`;}
+
+Object.assign(ACTIONS,{
+ mapMode(_,v){S.mapMode=v;S.mapFriend=null;S.mapPlace=null;render();},
+ mapFriends(){S.mapMode='Amis';S.mapFriend=null;go('map');},
+ openFriends(){go('friends');},
+ focusFriend(id){S.mapMode='Amis';S.mapFriend=id||null;if(S.screen!=='map')go('map');else render();},
+ ghost(){S.ghost=!S.ghost;render();toast(S.ghost?'Mode fantôme activé : tes amis ne te voient plus':'Tu es de nouveau visible par tes amis','eye');},
+ shareMode(_,v){S.shareMode=v;render();toast('Position partagée : '+v.toLowerCase(),'pin');},
+ addFriend(id){S.reqOut.add(id);render();toast(`Demande envoyée à ${U(id).name}`,'send');if(['mehdi','hugo','nour'].includes(id))setTimeout(()=>{if(!S.reqOut.has(id))return;S.reqOut.delete(id);S.friends.add(id);render();toast(`${U(id).name} a accepté ta demande 🎉`,'users');},1800);},
+ cancelReq(id){S.reqOut.delete(id);render();toast('Demande annulée','x');},
+ acceptReq(id){S.reqIn=S.reqIn.filter(x=>x!==id);S.friends.add(id);closeSheet();render();toast(`Toi et ${U(id).name} êtes maintenant amis`,'users');},
+ declineReq(id){S.reqIn=S.reqIn.filter(x=>x!==id);render();toast('Demande refusée','x');},
+ friendMenu(id){sheet(`<div class="h3">${U(id).name} · ami</div><div class="list"><div class="item" data-act="focusFriend" data-id="${id}" style="cursor:pointer">${I('pin')}<b style="font-size:14px">Voir sur la carte</b></div><div class="item" data-go="chat" data-id="${C(id)?id:'yanis'}" style="cursor:pointer">${I('chat')}<b style="font-size:14px">Envoyer un message</b></div><div class="item" data-act="inviteUser" data-id="${id}" style="cursor:pointer">${I('activity')}<b style="font-size:14px">Proposer une activité</b></div><div class="item" data-act="removeFriend" data-id="${id}" style="cursor:pointer;color:var(--bad)">${I('x')}<b style="font-size:14px">Retirer de mes amis</b></div></div>`);},
+ removeFriend(id){S.friends.delete(id);closeSheet();render();toast(`${U(id).name} ne fait plus partie de tes amis`,'x');},
+ invite(){toast('Lien d\'invitation copié · marsup.app/i/lola','nav');},
+});
+</script>
+<script>
+/* ---------- Points sociaux, classement et boutique de skins 2D ---------- */
+Object.assign(S,{points:420,streak:3,owned:new Set(['ring-azur']),equipped:{ring:'ring-azur',hat:null,bg:null},ledger:[
+ ['+50','Participation · Beach-volley aux Catalans','dim.'],['+30','Accueil d\'un nouveau membre · Tom','dim.'],['+20','Nouvel ami · Camille','sam.'],['+100','Profil vérifié','dim. dernier'],['−120','Boutique · cadre « Vague azur »','dim. dernier']]});
+const LEVELS=[[0,'Nouveau'],[250,'Régulier'],[600,'Pilier du quartier'],[1000,'Légende de la Corniche']];
+const levelOf=p=>{let l=LEVELS[0],n=null;for(let i=0;i<LEVELS.length;i++){if(p>=LEVELS[i][0]){l=LEVELS[i];n=LEVELS[i+1]||null;}}return {name:l[1],min:l[0],next:n};};
+const POINTS={yanis:1280,lea:1140,mehdi:980,hugo:910,ines:760,camille:540,tom:310,nour:290};
+Object.entries(POINTS).forEach(([id,p])=>USERS[id].points=p);
+USERS.yanis.skin={hat:'cap',ring:'ring-gold'};USERS.lea.skin={ring:'ring-sunset',hat:'ball'};USERS.mehdi.skin={hat:'headphones'};USERS.hugo.skin={bg:'bg-calanques'};USERS.ines.skin={hat:'flower'};
+
+const SKINS=[
+ {id:'ring-azur',cat:'Cadres',name:'Vague azur',price:120,ring:'#35B6FF'},
+ {id:'ring-gold',cat:'Cadres',name:'Or de Marseille',price:260,ring:'#E6B422'},
+ {id:'ring-sunset',cat:'Cadres',name:'Sunset Borély',price:200,ring:'#FF8A5C'},
+ {id:'ring-neon',cat:'Cadres',name:'Néon Cours Ju',price:300,ring:'#B45CFF'},
+ {id:'cap',cat:'Accessoires',name:'Casquette',price:150,hat:'🧢',pos:'top'},
+ {id:'headphones',cat:'Accessoires',name:'Casque audio',price:180,hat:'🎧',pos:'top'},
+ {id:'shades',cat:'Accessoires',name:'Lunettes de soleil',price:160,hat:'🕶️',pos:'mid'},
+ {id:'crown',cat:'Accessoires',name:'Couronne du mois',price:350,hat:'👑',pos:'top'},
+ {id:'ball',cat:'Accessoires',name:'Ballon de hand',price:140,hat:'🤾',pos:'br'},
+ {id:'flower',cat:'Accessoires',name:'Fleur de la Corniche',price:90,hat:'🌸',pos:'top'},
+ {id:'anchor',cat:'Accessoires',name:'Ancre du Vieux-Port',price:110,hat:'⚓',pos:'br'},
+ {id:'bg-calanques',cat:'Fonds',name:'Calanques',price:220,bg:'linear-gradient(135deg,#0FA3A3,#0F6BFF)'},
+ {id:'bg-night',cat:'Fonds',name:'Nuit au Vieux-Port',price:240,bg:'linear-gradient(135deg,#07234F,#6A3DBF)'},
+ {id:'bg-sand',cat:'Fonds',name:'Sable du Prado',price:180,bg:'linear-gradient(135deg,#F2C978,#35B6FF)'},
+ {id:'bg-sunset',cat:'Fonds',name:'Coucher de soleil',price:260,bg:'linear-gradient(160deg,#FF9A5C,#0F6BFF)'},
+];
+const SK=id=>SKINS.find(s=>s.id===id);
+function getDeco(x){if(!x)return {};if(x.id==='me')return {ring:S.equipped.ring,hat:S.equipped.hat,bg:S.equipped.bg};return x.skin||{};}
+function avDeco(x,cls,d){const r=d.ring&&SK(d.ring),h=d.hat&&SK(d.hat),b=d.bg&&SK(d.bg);
+ const st=[r?`box-shadow:0 0 0 2px var(--bg),0 0 0 4.5px ${r.ring}`:'',b?`background:${b.bg}`:''].filter(Boolean).join(';');
+ return `<span class="avatar ${cls} av-${x.av}"${st?` style="${st}"`:''}>${x.ini}${h?`<span class="hat ${h.pos}">${h.hat}</span>`:''}</span>`;}
+function addPoints(n,label){S.points+=n;S.ledger.unshift([(n>0?'+':'−')+Math.abs(n),label,'maintenant']);setTimeout(()=>toast(`${n>0?'+':''}${n} points sociaux · ${label}`,'sparkles'),700);}
+const _join=ACTIONS.join;ACTIONS.join=id=>{_join(id);addPoints(50,'Participation · '+A(id).title);};
+const _accept=ACTIONS.acceptReq;ACTIONS.acceptReq=id=>{_accept(id);addPoints(20,'Nouvel ami · '+U(id).name);};
+const _evtJoin=ACTIONS.evtJoin;ACTIONS.evtJoin=id=>{_evtJoin(id);addPoints(50,'Inscription · '+E(id).title);};
+const _created=ACTIONS.created;ACTIONS.created=()=>{_created();addPoints(100,'Activité organisée');};
+
+const levelCard=()=>{const L=levelOf(S.points);const pct=L.next?Math.round((S.points-L.min)/(L.next[0]-L.min)*100):100;
+ return `<div class="ai-card" style="align-items:stretch;gap:14px"><div class="row" style="gap:14px">${av('me','lg')}<div class="col grow"><span class="tiny" style="color:var(--sea);font-weight:800;letter-spacing:.08em">NIVEAU · ${L.name.toUpperCase()}</span><b style="font-size:26px;font-family:var(--fd)">${S.points} <span style="font-size:14px;font-weight:600;opacity:.8">points sociaux</span></b><span class="tiny" style="color:rgba(255,255,255,.8)">🔥 ${S.streak} semaines d'affilée · ${L.next?`${L.next[0]-S.points} pts avant « ${L.next[1]} »`:'niveau maximum'}</span></div></div><div class="progress" style="background:rgba(255,255,255,.2)"><i style="width:${pct}%;background:var(--sea)"></i></div></div>`;};
+
+SCREENS.rank=()=>{const tab=S.rankTab||'Amis';const ids=tab==='Amis'?[...S.friends,'me']:tab==='Mon quartier'?['ines','camille','me','tom','nour']:Object.keys(USERS);
+ const rows=ids.map(id=>U(id)).sort((a,b)=>(b.id==='me'?S.points:b.points)-(a.id==='me'?S.points:a.points));
+ const pts=u=>u.id==='me'?S.points:u.points;const myRank=rows.findIndex(u=>u.id==='me')+1;const offset=tab==='Marseille'?408:tab==='Mon quartier'?34:0;
+ const top=rows.slice(0,3);const podium=[top[1],top[0],top[2]].filter(Boolean);
+ return `<div class="sc">${head('Classement',`<button class="iconbtn blue" data-go="shop">${I('sparkles')}</button>`)}${levelCard()}
+ <div class="seg">${['Amis','Mon quartier','Marseille'].map(t=>`<button class="${tab===t?'on':''}" data-act="rankTab" data-v="${t}">${t}</button>`).join('')}</div>
+ <div class="row" style="justify-content:space-between"><span class="muted">Semaine du 29 sept. · tu es <b>${myRank+offset}${myRank+offset===1?'re':'e'}</b> ${tab==='Amis'?'parmi tes amis':tab==='Mon quartier'?'dans le 5e':'à Marseille'}</span><span class="tiny">Remise à zéro lundi</span></div>
+ <div class="podium">${podium.map((u,i)=>{const place=i===1?1:i===0?2:3;return `<button class="pod p${place}" data-go="${u.id==='me'?'profile':'user'}" data-id="${u.id}"><span class="medal">${['🥇','🥈','🥉'][place-1]}</span>${av(u,place===1?'lg':'')}<b>${u.name}</b><span class="tiny">${pts(u)} pts</span></button>`}).join('')}</div>
+ <div class="list card" style="padding:0 14px">${rows.slice(3).map((u,i)=>`<div class="item ${u.id==='me'?'me-row':''}" data-go="${u.id==='me'?'profile':'user'}" data-id="${u.id}" style="cursor:pointer"><b style="width:26px;text-align:center;color:var(--ink-3);font-variant-numeric:tabular-nums">${i+4+offset}</b>${av(u)}<div class="col grow"><b style="font-size:14px">${u.id==='me'?'Toi':u.name} ${u.verified?`<span class="verified">${I('check')}</span>`:''}</b><span class="tiny">${levelOf(pts(u)).name} · ${u.sports.slice(0,2).map(s=>EMO[s[0]]).join(' ')}</span></div><b style="font-variant-numeric:tabular-nums;color:var(--navy)">${pts(u)}</b><span class="tiny" style="color:${i%3===1?'var(--bad)':'var(--good)'}">${i%3===1?'▼':'▲'}</span></div>`).join('')}</div>
+ <div><div class="h3" style="margin-bottom:8px">Comment gagner des points</div><div class="card pad list" style="padding-block:2px">${[['🏃','Participer à une activité','+50'],['📣','Organiser une activité','+100'],['👋','Accueillir un nouveau membre','+30'],['🤝','Se faire un nouvel ami','+20'],['🔥','Série de 3 semaines','+150'],['✅','Profil vérifié','+100']].map(([e,t,p])=>`<div class="item"><span style="font-size:20px;width:28px;text-align:center">${e}</span><span class="grow" style="font-size:14px">${t}</span><span class="pill good">${p}</span></div>`).join('')}</div></div>
+ <div><div class="h3" style="margin-bottom:8px">Derniers gains</div><div class="card pad list" style="padding-block:2px">${S.ledger.slice(0,5).map(([p,l,d])=>`<div class="item"><span class="pill ${p.startsWith('+')?'good':'bad'}" style="min-width:52px;justify-content:center">${p}</span><div class="col grow"><span style="font-size:13.5px">${l}</span><span class="tiny">${d}</span></div></div>`).join('')}</div></div>
+ <button class="btn btn-primary btn-block" data-go="shop">${I('sparkles')} Dépenser mes points · Boutique</button>
+ <p class="tiny" style="text-align:center">Les points récompensent la participation réelle, pas la popularité. Aucune récompense n'est achetable avec de l'argent.</p></div>`;};
+
+SCREENS.shop=()=>{const cat=S.shopCat||'Tout';const items=SKINS.filter(s=>cat==='Tout'||s.cat===cat);
+ return `<div class="sc">${head('Boutique',`<span class="pill blue" style="font-size:14px;padding:8px 14px">⭐ ${S.points} pts</span>`)}
+ <div class="card pad" style="display:flex;flex-direction:column;align-items:center;gap:10px;background:linear-gradient(180deg,var(--sky),var(--surface))"><div style="padding:8px">${av('me','xl')}</div><b style="font-family:var(--fd);font-size:18px">Lola · ${levelOf(S.points).name}</b><div class="chips" style="justify-content:center">${['ring','hat','bg'].map(k=>S.equipped[k]?`<button class="chip on" data-act="equip" data-id="${S.equipped[k]}">${SK(S.equipped[k]).name} ✕</button>`:'').join('')||'<span class="tiny">Aucun skin équipé. Choisis un cadre, un accessoire ou un fond.</span>'}</div></div>
+ <div class="hscroll" style="padding-bottom:4px">${['Tout','Cadres','Accessoires','Fonds'].map(c=>`<button class="chip ${cat===c?'on':''}" data-act="shopCat" data-v="${c}">${c}</button>`).join('')}</div>
+ <div class="grid3" style="gap:10px">${items.map(s=>{const owned=S.owned.has(s.id);const eq=Object.values(S.equipped).includes(s.id);const can=S.points>=s.price;
+  return `<button class="tile skin ${eq?'on':''}" data-act="${owned?'equip':'buy'}" data-id="${s.id}" style="padding:12px 6px 10px;gap:6px"><span style="padding:6px">${avDeco(USERS.me,'',{ring:s.ring?s.id:null,hat:s.hat?s.id:null,bg:s.bg?s.id:null})}</span><span style="font-size:11.5px;line-height:1.2">${s.name}</span>${eq?'<span class="pill blue" style="font-size:10px">Équipé</span>':owned?'<span class="pill" style="font-size:10px">Possédé</span>':`<span class="pill ${can?'good':''}" style="font-size:10px">⭐ ${s.price}</span>`}</button>`}).join('')}</div>
+ <div class="card pad row" style="gap:10px;background:var(--sky);border-color:transparent">${I('sparkles')}<span class="tiny" style="color:var(--blue)">Skins 2D uniquement cosmétiques, visibles sur ton avatar, la carte des amis et le classement. Gagne des points en bougeant, pas en payant.</span></div>
+ <button class="btn btn-outline btn-block" data-go="rank">${I('trend')} Voir le classement</button></div>`;};
+
+Object.assign(ACTIONS,{
+ rankTab(_,v){S.rankTab=v;render();},shopCat(_,v){S.shopCat=v;render();},
+ buy(id){const s=SK(id);if(S.points<s.price){toast(`Il te manque ${s.price-S.points} points pour « ${s.name} »`,'x');return;}S.points-=s.price;S.owned.add(id);S.ledger.unshift(['−'+s.price,'Boutique · '+s.name,'maintenant']);ACTIONS.equip(id,null,true);toast(`« ${s.name} » acheté et équipé`,'sparkles');},
+ equip(id,_,silent){const s=SK(id);const k=s.ring?'ring':s.hat?'hat':'bg';S.equipped[k]=S.equipped[k]===id?null:id;render();if(!silent)toast(S.equipped[k]?`« ${s.name} » équipé`:`« ${s.name} » retiré`,'check');},
+});
+</script>
+<script>
 /* ---------- Site : activités populaires, sélecteur d'écrans, ouverture de la démo ---------- */
-const SCREEN_LIST=[['welcome','Landing app'],['signup','Inscription'],['verify','Vérification d\'identité'],['home','Accueil / fil'],['discover','Matching'],['activities','Activités'],['activity','Détail activité'],['messages','Messages'],['chat','Chat'],['map','Carte'],['events','Événements'],['notifications','Notifications'],['ai','IA mars’up'],['profile','Profil'],['settings','Confidentialité'],['admin','Dashboard admin']];
+const SCREEN_LIST=[['welcome','Landing app'],['signup','Inscription'],['verify','Vérification d\'identité'],['home','Accueil / fil'],['discover','Matching'],['activities','Activités'],['activity','Détail activité'],['messages','Messages'],['chat','Chat'],['map','Carte'],['friendsmap','Carte des amis'],['friends','Amis'],['rank','Classement'],['shop','Boutique'],['events','Événements'],['notifications','Notifications'],['ai','IA mars’up'],['profile','Profil'],['settings','Confidentialité'],['admin','Dashboard admin']];
 $('#pop-grid').innerHTML=ACTS.filter(a=>a.pop).map(a=>`<article class="pop-card" data-open="activity" data-id="${a.id}"><div class="scene">${scene(a.kind)}<span class="tag">${EMO[a.sport]} ${a.sport}</span></div><div class="body"><h3>${a.title}</h3><div class="meta"><span>📍 ${a.place}</span><span>🗓 ${a.day} ${a.time}</span></div><div class="meta"><span>👥 ${a.n} participants</span><span>${EMO[a.sport]} ${a.level}</span></div></div></article>`).join('');
 const chipsHtml=SCREEN_LIST.map(([id,l])=>`<button class="chip" data-open="${id}">${l}</button>`).join('');
 $('#screen-chips').innerHTML=chipsHtml;$('#phone-controls').innerHTML=chipsHtml;
 
 function openDemo(screen,id){
   if(screen==='admin'){document.body.classList.remove('demo-open');$('#admin').scrollIntoView({behavior:'smooth'});return;}
+  if(screen==='friendsmap'){S.mapMode='Amis';S.mapFriend=null;screen='map';}else if(screen==='map'){S.mapMode='Activités';}
   if(screen==='signup'){S.signup.step=1;}if(screen==='verify'){S.verify.step=0;}
   const p=id?{id}:screen==='activity'?{id:'sunset'}:screen==='chat'?{id:'running'}:{};
   go(screen,p);
