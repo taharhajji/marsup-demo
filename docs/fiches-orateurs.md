@@ -14,7 +14,7 @@ Démo : **https://marsup.vercel.app** · Deck : https://claude.ai/artifact/8YMN3
 
 Équipe (slide 0) : Tahar Hajji, Jeanne Reversat, Mohamed Benai, Maeliss Manuelle, Darine Sahi, Abdou Salima Andjeli.
 Terrain : entretiens de rue dans le centre de Marseille, 30 septembre et 1er octobre 2026.
-`[n]` = nombre de personnes interrogées, à insérer. Pas de chiffre inventé à l’oral.
+25 personnes interrogées. Les retours de la slide 4 sont à relire avec ce que vous avez vraiment entendu.
 
 ---
 
@@ -27,7 +27,7 @@ Terrain : entretiens de rue dans le centre de Marseille, 30 septembre et 1er oct
 - Plan : terrain → persona → solution → démo (Tahar) → retours
 
 ### Slide 1 · Problèmes terrain
-- [n] entretiens de rue, centre de Marseille, 30 sept. et 1er oct.
+- 25 entretiens de rue, centre de Marseille, 30 sept. et 1er oct.
 - **Seul** : on connaît sa promo, personne d’autre
 - **Niveau / créneau** : groupes WhatsApp éparpillés, infos périmées
 - **Méfiance** : faux profils, applis de rencontre déguisées, surtout chez les femmes
@@ -44,7 +44,7 @@ Terrain : entretiens de rue dans le centre de Marseille, 30 septembre et 1er oct
 - → passer à Mohamed
 
 ### Si on me demande
-- Combien d’entretiens → [n], centre-ville, 30 sept. et 1er oct., étudiants et jeunes actifs
+- Combien d’entretiens → 25, centre-ville, 30 sept. et 1er oct., étudiants et jeunes actifs
 - Pourquoi Marseille → ville étudiante, sport de plein air, communauté dispersée, terrain accessible
 - Différence Meetup / Facebook → vérification, matching niveau + créneau, chat auto
 
@@ -65,7 +65,7 @@ Terrain : entretiens de rue dans le centre de Marseille, 30 septembre et 1er oct
 - Plan B si bug : captures de la slide 3
 
 ### Slide 4 · Retours terrain
-- [n] personnes, centre de Marseille, 30 sept. et 1er oct.
+- 25 personnes, centre de Marseille, 30 sept. et 1er oct.
 - **Convaincus** : badge vérifié, niveau + créneaux visibles, chat dès l’inscription, carte des terrains
 - **Interrogés** : swipe = rencontre ?, « et si personne ne vient ? », localisation, démarrage
 - **Changé** : score expliqué + « sport uniquement », organisateur vérifié + rappel 2 h, arrondissement seulement, événements mars’up au lancement (Run Club, Beach Day, 3x3)
