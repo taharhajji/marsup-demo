@@ -1,0 +1,106 @@
+<title>Fiches orateurs mars’up</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* Document de lecture : une colonne, trois fiches imprimables, sommaire chronométré en tête. */
+:root{--blue:#0F6BFF;--navy:#07234F;--sea:#35B6FF;--bg:#F5F8FD;--surface:#FFFFFF;--sky:#EAF2FF;--line:#DCE6F5;--ink:#0B1A33;--ink-2:#4A5B78;--ink-3:#8696B3;--warn-bg:#FFF5E6;--warn:#C97A08;--fd:'Outfit',system-ui,sans-serif;--fb:'Manrope',system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--blue:#4A90FF;--navy:#EEF3FC;--bg:#07101F;--surface:#0E1A30;--sky:#122A52;--line:#1E2F4F;--ink:#EEF3FC;--ink-2:#A9B8D3;--ink-3:#6F82A6;--warn-bg:#2A1F0A;--warn:#F0B24B;color-scheme:dark}}
+:root[data-theme="dark"]{--blue:#4A90FF;--navy:#EEF3FC;--bg:#07101F;--surface:#0E1A30;--sky:#122A52;--line:#1E2F4F;--ink:#EEF3FC;--ink-2:#A9B8D3;--ink-3:#6F82A6;--warn-bg:#2A1F0A;--warn:#F0B24B;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--fb);font-size:16px;line-height:1.55}
+.wrap{max-width:820px;margin:0 auto;padding-block:40px 80px;padding-inline:20px}
+h1,h2,h3,h4{font-family:var(--fd);margin:0;line-height:1.15;text-wrap:balance;color:var(--navy)}
+h1{font-size:clamp(30px,5vw,44px);letter-spacing:-.02em}
+h2{font-size:26px;margin-top:56px;padding-top:28px;border-top:2px solid var(--line)}
+h3{font-size:19px;margin-top:28px}
+p{margin:10px 0}
+.eyebrow{font-family:var(--fd);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+.lede{color:var(--ink-2);font-size:17px}
+.who{display:inline-block;font-family:var(--fd);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;background:var(--sky);color:var(--blue);padding:4px 10px;border-radius:999px;margin-left:8px;vertical-align:middle}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-variant-numeric:tabular-nums;font-size:15px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{font-family:var(--fd);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+td:last-child,th:last-child{text-align:right}
+.tbl{overflow-x:auto}
+blockquote{margin:14px 0;padding:14px 18px;border-left:4px solid var(--blue);background:var(--surface);border-radius:0 12px 12px 0;color:var(--ink)}
+blockquote p{margin:8px 0}
+.note{background:var(--warn-bg);border-radius:12px;padding:12px 16px;color:var(--ink);font-size:15px}
+.note b{color:var(--warn)}
+.keys{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-size:15px}
+.keys b{font-family:var(--fd);color:var(--navy)}
+ul,ol{padding-left:22px;margin:10px 0}
+li{margin:6px 0}
+li::marker{color:var(--blue);font-weight:700}
+.qa dt{font-weight:700;margin-top:10px}
+.qa dd{margin:2px 0 0;color:var(--ink-2)}
+.link{font-weight:700;color:var(--blue);word-break:break-all}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin:16px 0}
+.steps li{margin:12px 0}
+.steps b{font-family:var(--fd)}
+.team{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.team span{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:14px;font-weight:600}
+.team span.demo{background:var(--blue);border-color:var(--blue);color:#fff}
+@media print{body{background:#fff}h2{break-before:page}.wrap{padding:0}}
+</style>
+<div class="wrap">
+<div class="eyebrow">INSEEC Marseille · Business project</div>
+<h1>Fiches orateurs mars’up</h1>
+<p class="lede">Plan Klaxoon, slides 0 à 4 plus démo hors slide. Durée cible : 9 à 10 minutes, soit 5 minutes de slides et 4 minutes de démo, puis questions.</p>
+<div class="team"><span>Tahar Hajji</span><span>Jeanne Reversat</span><span>Mohamed Benai</span><span>Maeliss Manuelle</span><span>Darine Sahi</span><span>Abdou Salima Andjeli</span></div>
+<p><b>Répartition</b> : Orateur 1 = [prénom], Orateur 2 = [prénom], démo de l’application = <b>Tahar</b>.</p>
+<div class="tbl"><table>
+<tr><th>Moment</th><th>Qui</th><th>Durée</th></tr>
+<tr><td>Slide 0 · Équipe et solution</td><td>Orateur 1</td><td>0:45</td></tr>
+<tr><td>Slide 1 · Problèmes terrain</td><td>Orateur 1</td><td>1:30</td></tr>
+<tr><td>Slide 2 · Persona + problématique</td><td>Orateur 1</td><td>1:00</td></tr>
+<tr><td>Slide 3 · Notre solution</td><td>Orateur 2</td><td>1:30</td></tr>
+<tr><td>Hors slide · Démo de l’appli</td><td>Tahar</td><td>4:00</td></tr>
+<tr><td>Slide 4 · Retours terrain</td><td>Orateur 2</td><td>1:30</td></tr>
+</table></div>
+<p>Démo : <span class="link">https://marsup.vercel.app</span> (QR code sur la slide « Démo »). Deck : <span class="link">https://claude.ai/artifact/8YMN3JRUAY2cELuFn1wYKp</span></p>
+<p class="note"><b>Avant la présentation</b> : remplacer tous les éléments entre crochets par vos vraies données (nombre d’entretiens, verbatims, chiffres de tests). Ne pas annoncer de chiffre inventé à l’oral.</p>
+
+<h2>Fiche Orateur 1 <span class="who">Ouverture · terrain · persona · 3 min 15</span></h2>
+<h3>Slide 0 · Équipe et solution (0:45)</h3>
+<blockquote><p>Bonjour à tous. Nous sommes Tahar, Jeanne, Mohamed, Maeliss, Darine et Salima, et nous vous présentons <b>mars’up</b>.</p><p>mars’up, c’est une application sociale et sportive pour les étudiants et les jeunes adultes qui arrivent à Marseille : trouver une activité, un groupe et les personnes qui nous correspondent, en quelques minutes.</p><p>Notre promesse tient en une phrase : <b>Bouge. Rencontre. Vis Marseille autrement.</b></p><p>On va vous raconter ce qu’on a vu sur le terrain, pour qui on a construit la solution, comment elle fonctionne, et ce que les premiers testeurs nous ont dit. Tahar vous fera ensuite une démonstration en direct.</p></blockquote>
+<p class="keys"><b>Points clés</b> : nom et promesse en une phrase, annoncer le plan, annoncer la démo.</p>
+<h3>Slide 1 · Les problèmes rencontrés sur le terrain (1:30)</h3>
+<blockquote><p>Avant de construire quoi que ce soit, on est allés sur le terrain : [n] entretiens avec des étudiants et des jeunes actifs, sur les campus, au Prado et sur les terrains en accès libre. Quatre problèmes reviennent tout le temps.</p><p><b>Un, arriver seul.</b> Quand on débarque, on connaît sa promo et c’est tout. Rencontrer des gens en dehors, c’est le hasard.</p><p><b>Deux, trouver des partenaires de sport.</b> Les gens veulent courir, jouer au beach-volley, au basket, mais ne trouvent personne au bon niveau et au bon créneau. L’info est dispersée dans des groupes WhatsApp et Facebook jamais à jour.</p><p><b>Trois, la méfiance.</b> Les applis existantes sont perçues comme des applis de rencontre déguisées, avec des faux profils. Les jeunes femmes nous l’ont dit clairement : sans vérification, elles ne rejoignent pas un inconnu.</p><p><b>Quatre, une offre invisible.</b> Marseille a tout, playgrounds, plages, calanques, événements gratuits, mais rien n’est centralisé ni pensé pour quelqu’un qui vient d’arriver.</p><p>[Citer ici un verbatim marquant d’un entretien.]</p></blockquote>
+<p class="keys"><b>Points clés</b> : quatre problèmes dans cet ordre, un mot chacun : seul · niveau et créneau · méfiance · invisible.</p>
+<h3>Slide 2 · Persona et problématique (1:00)</h3>
+<blockquote><p>Pour rendre tout ça concret, voici <b>Sarah</b>. 21 ans, troisième année, elle habite dans le 6e, arrivée en septembre.</p><p>Elle court deux fois par semaine, aimerait essayer le beach-volley, libre mardi soir, jeudi soir et samedi matin. Budget étudiant : pas de club payant. Et surtout, <b>elle veut savoir avec qui elle part avant de dire oui</b>.</p><p>Notre problématique : <b>comment permettre à un jeune qui arrive à Marseille de trouver, en quelques minutes, une activité sportive et des personnes de confiance avec qui la pratiquer ?</b></p><p>Trois exigences : au bon niveau, au bon créneau, sans risque. Je passe la parole à [Orateur 2] pour la solution.</p></blockquote>
+<p class="keys"><b>Transition</b> : regarder Orateur 2 et lui tendre la télécommande.</p>
+<h3>Questions probables</h3>
+<dl class="qa">
+<dt>Combien d’entretiens ?</dt><dd>[n], réalisés [où et quand], profils [âges, écoles].</dd>
+<dt>Pourquoi Marseille ?</dt><dd>Ville étudiante en forte croissance, offre sportive de plein air unique, communauté très dispersée. C’est aussi là qu’on a pu tester.</dd>
+<dt>En quoi est-ce différent de Meetup ou des groupes Facebook ?</dt><dd>Vérification d’identité, matching par niveau et créneau, chat ouvert automatiquement. Meetup n’est ni local, ni sportif, ni vérifié.</dd>
+</dl>
+
+<h2>Fiche Orateur 2 <span class="who">Solution · relais · retours · 3 min</span></h2>
+<h3>Slide 3 · Notre solution (1:30)</h3>
+<blockquote><p>Notre réponse, c’est mars’up, en trois étapes.</p><p><b>Étape un, le profil.</b> Sarah renseigne ses sports, son niveau dans chacun, son quartier, ses créneaux, ses centres d’intérêt. Et elle <b>vérifie son identité</b> : pièce d’identité plus selfie, via un prestataire spécialisé. mars’up ne stocke aucun document, uniquement le statut « vérifié ». C’est notre réponse à la méfiance.</p><p><b>Étape deux, le matching.</b> L’app lui propose des personnes, des activités, des groupes et des événements selon la distance, le niveau, les disponibilités, l’âge et les intérêts. <b>C’est du matching sportif, pas une appli de rencontre</b> : chaque proposition explique pourquoi elle correspond.</p><p><b>Étape trois, l’activité.</b> Un tap pour rejoindre le Sunset Run au parc Borély, le chat du groupe s’ouvre, on se met d’accord sur le rendez-vous, et on se retrouve. Autour : la carte de Marseille, les événements mars’up et partenaires, l’IA mars’up qui répond à « je suis libre mardi soir, je fais quoi ? », et un espace administrateur pour la modération.</p><p>Tout ça existe en prototype fonctionnel : Tahar vous le montre en direct.</p></blockquote>
+<p class="keys"><b>Transition</b> : passer à la slide « Démo » (QR code) et la laisser affichée pendant toute la démo. Pendant la démo, rester visible, ne pas parler. Si la connexion lâche, les trois captures de la slide 3 servent de secours.</p>
+<h3>Slide 4 · Retours terrain principaux (1:30)</h3>
+<blockquote><p>On a fait tester le prototype à [n] personnes, [où et quand]. Trois enseignements.</p><p><b>Ce qui a convaincu</b> : le badge « Profil vérifié », qui lève le frein principal, surtout chez les jeunes femmes. Le niveau et les créneaux visibles partout. Le chat de groupe ouvert dès l’inscription. Et la carte des terrains en accès libre.</p><p><b>Ce qui a interrogé</b> : le swipe, qui fait penser à une appli de rencontre. « Et si personne ne vient ? ». La peur de partager sa localisation. Et le démarrage : comment avoir des activités dès le premier jour ?</p><p><b>Ce qu’on en a fait</b> : chaque proposition affiche pourquoi elle correspond, avec la mention « sport et rencontres sociales uniquement ». Chaque activité a un organisateur vérifié et un rappel deux heures avant. La localisation est approximative par défaut. Et pour lancer la communauté, mars’up crée elle-même les premiers événements avec des partenaires : Run Club du mercredi, Beach Day aux Catalans, tournoi 3x3 au Prado.</p><p>Merci pour votre attention, on est disponibles pour vos questions.</p></blockquote>
+<h3>Questions probables</h3>
+<dl class="qa">
+<dt>Modèle économique ?</dt><dd>Gratuit pour les membres. Revenus via les événements partenaires (salles, clubs, marques sport), des places payantes sur certains événements, et une offre « campus » pour les écoles.</dd>
+<dt>RGPD et vérification ?</dt><dd>Prestataire certifié (type Ubble ou Onfido), documents supprimés sous 24 h chez le prestataire, mars’up ne conserve que le statut. Consentements, export et suppression dans l’app.</dd>
+<dt>Comment éviter la dérive « appli de drague » ?</dt><dd>Positionnement explicite, matching centré sur l’activité, signalement en deux taps, modération humaine sous 24 h, suspension des comptes.</dd>
+<dt>Et si l’activité n’a pas assez de monde ?</dt><dd>Organisateur vérifié, liste d’attente, rappel, et événements mars’up garantis au lancement.</dd>
+</dl>
+
+<h2>Fiche Démo <span class="who">Tahar · 4 min</span></h2>
+<div class="card"><b>Préparation</b> : ouvrir <span class="link">https://marsup.vercel.app</span> sur ton téléphone avant la présentation, luminosité au maximum. Partager l’écran du téléphone, ou faire la démo sur l’ordinateur en fenêtre étroite. Garder la slide « Démo » (QR code) affichée au vidéoprojecteur.</div>
+<blockquote><p><b>Ouverture</b> : « Tout ce que [Orateur 2] vient de décrire existe. Je prends le téléphone de Sarah. »</p></blockquote>
+<ol class="steps">
+<li><b>Inscription et vérification (1:00)</b>. Landing app, « Créer mon profil ». Faire défiler : étape sports et niveau, étape disponibilités (montrer la grille), étape préférences. « Vérifier mon identité » : pièce d’identité, selfie, badge « Profil vérifié ». Dire : aucun document ne passe par nos serveurs, seul le statut « vérifié » est conservé.</li>
+<li><b>Matching (0:50)</b>. « Entrer dans mars’up », accueil « Salut Sarah ». Onglet Découvrir : carte de Yanis, score 92 %, les raisons (1,8 km, même niveau, dispo mardi soir). Swiper à droite : « C’est un match sportif ». Dire : pas de rencontre amoureuse, on matche sur un sport, un niveau, un créneau.</li>
+<li><b>Activité et chat (0:50)</b>. Onglet Activités, « Sunset Run », « Rejoindre l’activité », « Ouvrir le chat ». Taper « On se retrouve à 18h15 ? » et montrer la réponse.</li>
+<li><b>Carte et IA (0:40)</b>. Icône carte : toucher le marqueur Parc Borély, les activités du lieu apparaissent. Depuis l’accueil, carte IA mars’up : taper « je suis libre mardi soir », trois propositions avec bouton Rejoindre.</li>
+<li><b>Sécurité et admin (0:40)</b>. Profil, roue crantée : visibilité, localisation approximative, export et suppression des données. Sur l’ordinateur : section Espace administration en bas de la page, valider une vérification, traiter un signalement, envoyer une notification.</li>
+</ol>
+<blockquote><p><b>Clôture</b> : « Tout est en ligne sur marsup.vercel.app : scannez le QR code, c’est à vous. »</p></blockquote>
+<p class="note"><b>Si ça plante</b> : recharger la page. Sinon s’appuyer sur les captures de la slide 3 et décrire le parcours. Le prototype est aussi disponible hors connexion dans le fichier index.html du dépôt GitHub.</p>
+<p class="keys"><b>Astuces</b> : décrire ce que tu tapes (« je rejoins le Sunset Run »), ne jamais s’excuser pour un détail visuel, laisser deux secondes sur chaque écran clé : badge vérifié, match, chat.</p>
+</div>
